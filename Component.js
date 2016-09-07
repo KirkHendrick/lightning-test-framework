@@ -2,7 +2,7 @@
  * Created by khendrick on 9/3/16.
  */
 var controller = require('./Controller.js');
-var helper = require('./Helper.js');
+//var helper = require('./Helper.js');
 
 var Component = (function Component(controller, helper, state) {
 
@@ -61,6 +61,7 @@ var Component = (function Component(controller, helper, state) {
            controller = controllerIn;
         },
 
+        /*
         getHelper : function() {
             return helper;
         },
@@ -68,6 +69,7 @@ var Component = (function Component(controller, helper, state) {
         setHelper : function (helperIn) {
             helper = helperIn;
         },
+        */
 
         getEvent : function() {
             return event;
@@ -82,6 +84,6 @@ var Component = (function Component(controller, helper, state) {
         }
     };
 
-})(controller, helper);
+})(controller/*, helper*/);
 
 exports.Component = Component;

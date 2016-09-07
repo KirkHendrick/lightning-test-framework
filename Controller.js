@@ -1,7 +1,7 @@
 /**
  * Created by khendrick on 8/24/16.
  */
-var helper = require('./Helper');
+//var helper = require('./Helper');
 
 var Controller = (function(helper) {
 
@@ -13,6 +13,6 @@ var Controller = (function(helper) {
 
     }
 
-})(helper);
+})(/*helper*/);
 
 exports.Controller = Controller;
