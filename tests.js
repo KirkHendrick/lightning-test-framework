@@ -4,7 +4,7 @@
 
 var assert = require('assert'),
     MockComponent = require('./MockComponent').MockComponent,
-    Controller = require('./Controller').Controller;
+    TestController = require('./Controller').Controller;
     /*
     Helper = require('./Helper');
     */
@@ -87,9 +87,36 @@ describe('Controller', function() {
                     value: 'testValue'
                 }
             ]);
-            var controller = Controller;
+            var controller = TestController;
 
             controller.testGet(component);
+
+            assert.ok(true, 'did not throw error');
+        });
+
+        it('should be able to use component #set() without error', function() {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+            var controller = TestController;
+
+            controller.testSet(component);
+
+            assert.ok(true, 'did not throw error');
+        });
+
+        it('should be able to use component #find() without error', function() {
+            var component = MockComponent([], [
+                {
+                    name: 'testElement',
+                }
+            ]);
+            var controller = TestController;
+
+            controller.testFind(component);
 
             assert.ok(true, 'did not throw error');
         });
