@@ -1,7 +1,9 @@
 /**
  * Created by khendrick on 8/24/16.
  */
-var TestController = (function TestController() {
+var Mock$A = require('./Mock$A').Mock$A;
+
+var TestController = (function TestController($A) {
 
     'use strict';
 
@@ -20,11 +22,15 @@ var TestController = (function TestController() {
         },
 
         testHelperGet : function(component, event, helper) {
-            var testAttribute = helper.testGet(component);
+            helper.testGet(component);
+        },
+
+        test$AisUndefined : function(obj) {
+            $A.util.isUndefined(obj);
         }
     };
 
 
-})();
+})(Mock$A);
 
 exports.Controller = TestController;

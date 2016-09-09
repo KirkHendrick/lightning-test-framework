@@ -136,6 +136,16 @@ describe('Controller', function() {
             assert.ok(true, 'did not throw error');
         });
     });
+
+    describe('can use $A', function() {
+        it('should be able to use $A.util.isUndefined without error', function() {
+            var controller = TestController;
+
+            controller.test$AisUndefined({});
+
+            assert.ok(true, 'did not throw error');
+        });
+    });
 });
 
 describe('Helper', function() {
@@ -153,6 +163,15 @@ describe('Helper', function() {
 
             assert.ok(true, 'did not throw error');
         });
+    });
 
+    describe('can use $A', function() {
+        it('should be able to use $A.util.isUndefined without error', function() {
+            var helper = TestHelper;
+
+            helper.test$AisUndefined({});
+
+            assert.ok(true, 'did not throw error');
+        });
     });
 });
