@@ -4,10 +4,8 @@
 
 var assert = require('assert'),
     MockComponent = require('./MockComponent').MockComponent,
-    TestController = require('./Controller').Controller;
-    /*
-    Helper = require('./Helper');
-    */
+    TestController = require('./Controller').Controller,
+    TestHelper = require('./Helper').Helper;
 
 describe('MockComponent', function () {
     describe('#MockComponent()', function() {
@@ -120,5 +118,41 @@ describe('Controller', function() {
 
             assert.ok(true, 'did not throw error');
         });
+    });
+
+    describe('can use helper', function() {
+        it('should be able to use helper testGet without error', function() {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+            var controller = TestController;
+            var helper = TestHelper;
+
+            controller.testHelperGet(component, null, helper);
+
+            assert.ok(true, 'did not throw error');
+        });
+    });
+});
+
+describe('Helper', function() {
+    describe('can use mock component', function() {
+        it('should be able to use component #get() without error', function() {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+            var helper = TestHelper;
+
+            helper.testGet(component);
+
+            assert.ok(true, 'did not throw error');
+        });
+
     });
 });

@@ -1,19 +1,18 @@
 /**
  * Created by khendrick on 8/26/16.
  */
-var component = require('./Component');
-console.log(component);
-
-var Helper = (function Helper($A) {
+var TestHelper = (function TestHelper() {
 
     'use strict';
 
     return {
 
-        // drop helper here
+        testGet : function(component) {
+            return component.get('v.testAttribute');
+        }
 
-    }
+    };
 
-})(component.get$A());
+})();
 
-exports.Helper = Helper;
+exports.Helper = TestHelper;
