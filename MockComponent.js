@@ -2,7 +2,7 @@
  * Created by khendrick on 9/3/16.
  */
 
-(function MockComponent(exports) {
+(function(exports) {
 
     'use strict';
 

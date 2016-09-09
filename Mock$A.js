@@ -25,6 +25,19 @@ var Mock$A = (function Mock$A() {
 
             hasClass : function(element, cssClass) {
                 return ~element.cssClasses.indexOf(cssClass);
+            },
+
+            toggleClass : function(element, cssClass) {
+                if(this.hasClass(element, cssClass)) {
+                    this.removeClass(element, cssClass);
+                }
+                else {
+                    this.addClass(element, cssClass);
+                }
+            },
+
+            getBooleanValue : function(value) {
+                return Boolean(value);
             }
         }
     };

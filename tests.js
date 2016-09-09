@@ -296,4 +296,60 @@ describe('$A', function() {
             assert.deepEqual(result, false);
         });
     });
+
+    describe('#toggleClass()', function() {
+        it('should remove the css class from the element if it has it', function() {
+            var component = MockComponent([], [
+                    {
+                        name: 'testElement',
+                        cssClasses: 'slds-test'
+                    }
+                ]),
+                $A = Mock$A;
+            var element = component.find('testElement');
+
+            $A.util.toggleClass(element, 'slds-test');
+
+            var result = ~element.cssClasses.indexOf('slds-test');
+
+            assert.deepEqual(result, false);
+        });
+
+        it('should add the css class to the element if it does not have it', function() {
+            var component = MockComponent([], [
+                    {
+                        name: 'testElement',
+                        cssClasses: ''
+                    }
+                ]),
+                $A = Mock$A;
+            var element = component.find('testElement');
+
+            $A.util.toggleClass(element, 'slds-test');
+
+            var result = ~element.cssClasses.indexOf('slds-test');
+
+            assert.ok(result);
+        });
+    });
+
+    describe('#getBooleanValue()', function() {
+        it('should return false if value is falsy', function() {
+            var $A = Mock$A,
+                testValue = "";
+
+            var result = $A.util.getBooleanValue(testValue);
+
+            assert.deepEqual(result, false);
+        });
+
+        it('should return true if value is truthy', function() {
+            var $A = Mock$A,
+                testValue = "test string";
+
+            var result = $A.util.getBooleanValue(testValue);
+
+            assert.ok(result);
+        });
+    });
 });
