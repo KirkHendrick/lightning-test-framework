@@ -3,7 +3,7 @@
  */
 //var helper = require('./Helper');
 
-var Controller = (function(helper) {
+var Controller = (function Controller() {
 
     'use strict';
 
@@ -11,8 +11,12 @@ var Controller = (function(helper) {
         
         // drop controller here
 
-    }
+        testGet : function(component) {
+            var testAttribute = component.get('v.testAttribute');
+        }
+    };
 
-})(/*helper*/);
+
+})();
 
 exports.Controller = Controller;

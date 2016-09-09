@@ -7,9 +7,10 @@
     'use strict';
 
     var attributes = [];
+    var elements = [];
 
-    var MockComponent = function(attributes) {
-        return new MockComponent.init(attributes);
+    var MockComponent = function(attributes, elements) {
+        return new MockComponent.init(attributes, elements);
     };
 
 
@@ -28,12 +29,21 @@
             })[0];
 
             attribute.value = newValue;
+        },
+
+        find : function(elementName) {
+            var element = this.elements.filter(function(obj) {
+                return obj.name === elementName;
+            })[0];
+
+            return element;
         }
     };
 
-    MockComponent.init = function(attributes) {
+    MockComponent.init = function(attributes, elements) {
 
         this.attributes = attributes || [];
+        this.elements = elements || [];
 
     };
 

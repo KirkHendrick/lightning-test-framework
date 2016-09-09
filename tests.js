@@ -3,31 +3,23 @@
  */
 
 var assert = require('assert'),
-    MockComponent = require('./MockComponent').MockComponent;
+    MockComponent = require('./MockComponent').MockComponent,
+    Controller = require('./Controller').Controller;
     /*
-    controller = require('./Controller'),
-    helper = require('./Helper');
+    Helper = require('./Helper');
     */
 
-describe('initial tests: ', function () {
-    describe('does exist', function () {
-        it('should not be null', function () {
-            var component = MockComponent;
+describe('MockComponent', function () {
+    describe('#MockComponent()', function() {
+        it('creates a new MockComponent object without the new keyword', function() {
+            var component = MockComponent();
 
-            assert.notDeepEqual(component, undefined);
+            assert.deepEqual(typeof component, 'object')
         });
     });
 
-    describe('can be invoked', function () {
-        it('should not be null', function () {
-            var component = MockComponent([]);
-
-            assert.notDeepEqual(component, undefined);
-        });
-    });
-
-    describe('can access attributes', function () {
-        it('use .get to access them', function () {
+    describe('#get()', function () {
+        it('should retrieve the correct attribute', function () {
             var component = MockComponent([
                 {
                     name: 'testAttribute',
@@ -38,12 +30,24 @@ describe('initial tests: ', function () {
             var testAttribute = component.get("v.testAttribute");
 
             assert.deepEqual(testAttribute.name, 'testAttribute');
+        });
+
+        it('should retrieve the correct attribute value', function () {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+
+            var testAttribute = component.get("v.testAttribute");
+
             assert.deepEqual(testAttribute.value, 'testValue');
         });
     });
 
-    describe('can access attributes', function () {
-        it('use .set to set them', function () {
+    describe('#set()', function () {
+        it('should change the value of the correct attribute', function () {
             var component = MockComponent([
                 {
                     name: 'testAttribute',
@@ -55,9 +59,39 @@ describe('initial tests: ', function () {
             component.set("v.testAttribute", newValue);
 
             var testAttribute = component.get("v.testAttribute");
-            assert.deepEqual(testAttribute.name, 'testAttribute');
             assert.deepEqual(testAttribute.value, newValue);
+        });
+    });
+
+    describe('#find()', function() {
+        it('should find the correct element by name', function() {
+            var component = MockComponent([], [
+                {
+                    name: 'testElement'
+                }
+            ]);
+
+            var testElement = component.find('testElement');
+
+            assert.deepEqual(testElement.name, 'testElement');
         });
     });
 });
 
+describe('Controller', function() {
+    describe('can use mock component', function() {
+        it('should be able to use component #get() without error', function() {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+            var controller = Controller;
+
+            controller.testGet(component);
+
+            assert.ok(true, 'did not throw error');
+        });
+    });
+});
