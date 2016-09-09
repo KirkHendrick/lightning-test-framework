@@ -25,5 +25,39 @@ describe('initial tests: ', function () {
             assert.notDeepEqual(component, undefined);
         });
     });
+
+    describe('can access attributes', function () {
+        it('use .get to access them', function () {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+
+            var testAttribute = component.get("v.testAttribute");
+
+            assert.deepEqual(testAttribute.name, 'testAttribute');
+            assert.deepEqual(testAttribute.value, 'testValue');
+        });
+    });
+
+    describe('can access attributes', function () {
+        it('use .set to set them', function () {
+            var component = MockComponent([
+                {
+                    name: 'testAttribute',
+                    value: 'testValue'
+                }
+            ]);
+            var newValue = 'newValue';
+
+            component.set("v.testAttribute", newValue);
+
+            var testAttribute = component.get("v.testAttribute");
+            assert.deepEqual(testAttribute.name, 'testAttribute');
+            assert.deepEqual(testAttribute.value, newValue);
+        });
+    });
 });
 

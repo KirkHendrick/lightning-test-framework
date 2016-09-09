@@ -13,11 +13,27 @@
     };
 
 
-    MockComponent.prototype = {};
+    MockComponent.prototype = {
+        get : function(attributeName) {
+            var attribute = this.attributes.filter(function(obj) {
+                return obj.name === attributeName.slice(2);
+            })[0];
+
+            return attribute;
+        },
+
+        set : function(attributeName, newValue) {
+            var attribute = this.attributes.filter(function(obj) {
+                return obj.name === attributeName.slice(2);
+            })[0];
+
+            attribute.value = newValue;
+        }
+    };
 
     MockComponent.init = function(attributes) {
 
-        this.attributes = attributes || 'test attribute';
+        this.attributes = attributes || [];
 
     };
 
