@@ -5,7 +5,8 @@
 var assert = require('assert'),
     MockComponent = require('./MockComponent').MockComponent,
     TestController = require('./Controller').Controller,
-    TestHelper = require('./Helper').Helper;
+    TestHelper = require('./Helper').Helper,
+    Mock$A = require('./Mock$A').Mock$A;
 
 describe('MockComponent', function () {
     describe('#MockComponent()', function() {
@@ -172,6 +173,127 @@ describe('Helper', function() {
             helper.test$AisUndefined({});
 
             assert.ok(true, 'did not throw error');
+        });
+    });
+});
+
+describe('$A', function() {
+    describe('#isUndefined()', function() {
+        it('should return true if object is undefined', function() {
+           var $A = Mock$A;
+           var testObject;
+
+           var result = $A.util.isUndefined(testObject);
+
+           assert.ok(result);
+        });
+
+        it('should return false if object is not undefined', function() {
+            var $A = Mock$A;
+            var testObject = {};
+
+            var result = $A.util.isUndefined(testObject);
+
+            assert.deepEqual(result, false);
+        });
+    });
+
+    describe('#isUndefinedOrNull()', function() {
+        it('should return true if undefined', function() {
+            var $A = Mock$A;
+            var testObject;
+
+            var result = $A.util.isUndefinedOrNull(testObject);
+
+            assert.ok(result);
+        });
+
+        it('should return false if object is not undefined', function() {
+            var $A = Mock$A;
+            var testObject = {};
+
+            var result = $A.util.isUndefinedOrNull(testObject);
+
+            assert.deepEqual(result, false);
+        });
+
+        it('should return true if object is null', function() {
+            var $A = Mock$A;
+            var testObject = null;
+
+            var result = $A.util.isUndefinedOrNull(testObject);
+
+            assert.ok(result);
+        });
+    });
+
+    describe('#addClass()', function() {
+        it('should add the specified css class to an element', function() {
+            var component = MockComponent([], [
+                {
+                    name: 'testElement',
+                    cssClasses: ''
+                }
+            ]),
+                $A = Mock$A;
+            var element = component.find('testElement');
+
+            $A.util.addClass(element, 'slds-test');
+
+            var result = ~element.cssClasses.indexOf('slds-test');
+
+            assert.ok(result);
+        });
+    });
+
+    describe('#removeClass()', function() {
+        it('should remove the specified css class from an element', function() {
+            var component = MockComponent([], [
+                    {
+                        name: 'testElement',
+                        cssClasses: 'slds-test'
+                    }
+                ]),
+                $A = Mock$A;
+            var element = component.find('testElement');
+
+            $A.util.removeClass(element, 'slds-test');
+
+            var result = ~element.cssClasses.indexOf('slds-test');
+
+            assert.deepEqual(result, false);
+        });
+    });
+
+    describe('#hasClass()', function() {
+        it('should return true if the element has the css class', function() {
+            var component = MockComponent([], [
+                    {
+                        name: 'testElement',
+                        cssClasses: 'slds-test'
+                    }
+                ]),
+                $A = Mock$A;
+            var element = component.find('testElement');
+
+            var result = $A.util.hasClass(element, 'slds-test');
+
+            assert.ok(result);
+        });
+
+        it('should return false if the element does not have the css class', function() {
+            var component = MockComponent([], [
+                    {
+                        name: 'testElement',
+                        cssClasses: 'slds-different'
+                    }
+                ]),
+                $A = Mock$A;
+            var element = component.find('testElement');
+
+            var result = $A.util.hasClass(element, 'slds-test');
+
+            assert.deepEqual(result, false);
         });
     });
 });
