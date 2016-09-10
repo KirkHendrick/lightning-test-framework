@@ -66,13 +66,13 @@ describe('MockComponent', function () {
         it('should find the correct element by name', function() {
             var component = MockComponent([], [
                 {
-                    name: 'testElement'
+                    auraId: 'testElement'
                 }
             ]);
 
             var testElement = component.find('testElement');
 
-            assert.deepEqual(testElement.name, 'testElement');
+            assert.deepEqual(testElement.auraId, 'testElement');
         });
     });
 
@@ -335,7 +335,7 @@ describe('$A', function() {
         it('should add the specified css class to an element', function() {
             var component = MockComponent([], [
                 {
-                    name: 'testElement',
+                    auraId: 'testElement',
                     cssClasses: ''
                 }
             ]),
@@ -354,7 +354,7 @@ describe('$A', function() {
         it('should remove the specified css class from an element', function() {
             var component = MockComponent([], [
                     {
-                        name: 'testElement',
+                        auraId: 'testElement',
                         cssClasses: 'slds-test'
                     }
                 ]),
@@ -373,7 +373,7 @@ describe('$A', function() {
         it('should return true if the element has the css class', function() {
             var component = MockComponent([], [
                     {
-                        name: 'testElement',
+                        auraId: 'testElement',
                         cssClasses: 'slds-test'
                     }
                 ]),
@@ -388,7 +388,7 @@ describe('$A', function() {
         it('should return false if the element does not have the css class', function() {
             var component = MockComponent([], [
                     {
-                        name: 'testElement',
+                        auraId: 'testElement',
                         cssClasses: 'slds-different'
                     }
                 ]),
@@ -405,7 +405,7 @@ describe('$A', function() {
         it('should remove the css class from the element if it has it', function() {
             var component = MockComponent([], [
                     {
-                        name: 'testElement',
+                        auraId: 'testElement',
                         cssClasses: 'slds-test'
                     }
                 ]),
@@ -422,7 +422,7 @@ describe('$A', function() {
         it('should add the css class to the element if it does not have it', function() {
             var component = MockComponent([], [
                     {
-                        name: 'testElement',
+                        auraId: 'testElement',
                         cssClasses: ''
                     }
                 ]),

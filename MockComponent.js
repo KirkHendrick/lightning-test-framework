@@ -10,7 +10,6 @@
         return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
     };
 
-
     MockComponent.prototype = {
         get : function(attributeName) {
             var attribute = this.attributes.filter(function(obj) {
@@ -28,9 +27,9 @@
             attribute.value = newValue;
         },
 
-        find : function(elementName) {
+        find : function(auraId) {
             var element = this.elements.filter(function(obj) {
-                return obj.name === elementName;
+                return obj.auraId === auraId;
             })[0];
 
             return element;
