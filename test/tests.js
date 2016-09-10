@@ -495,7 +495,7 @@ describe('$A.util', function() {
 
             var result = $A.util.isEmpty(testValue);
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
 
         it('should return true if value is an empty array', function() {
@@ -535,4 +535,60 @@ describe('$A.util', function() {
         });
     });
 
+    describe('#isObject()', function() {
+        it('should return false if value is falsy', function() {
+            var $A = Mock$A,
+                testValue = null;
+
+            var result = $A.util.isObject(testValue);
+
+            assert.deepEqual(false, result);
+        });
+
+        it('should return true if value is an empty object', function() {
+            var $A = Mock$A,
+                testValue = {};
+
+            var result = $A.util.isObject(testValue);
+
+            assert.ok(result);
+        });
+
+        it('should return false if value is an array', function() {
+            var $A = Mock$A,
+                testValue = [];
+
+            var result = $A.util.isObject(testValue);
+
+            assert.deepEqual(false, result);
+        });
+
+        it('should return false if value is a function', function() {
+            var $A = Mock$A,
+                testValue = function() {};
+
+            var result = $A.util.isObject(testValue);
+
+            assert.deepEqual(false, result);
+        });
+
+        it('should return false if value is a string', function() {
+            var $A = Mock$A,
+                testValue = "test string";
+
+            var result = $A.util.isObject(testValue);
+
+            assert.deepEqual(false, result);
+        });
+
+        it('should return false if value is a number', function() {
+            var $A = Mock$A,
+                testValue = 8;
+
+            var result = $A.util.isObject(testValue);
+
+            assert.deepEqual(false, result);
+        });
+        //TODO: it('should return false if value is a DOM element', function() { });
+    });
 });

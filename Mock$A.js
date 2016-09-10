@@ -49,6 +49,15 @@ var Mock$A = (function Mock$A() {
                     return true;
                 }
                 return false;
+            },
+
+            isObject : function(value) {
+                if(value &&
+                   value.constructor !== Array &&
+                    typeof value === 'object') {
+                    return true;
+                }
+                return false;
             }
         },
         enqueueAction : function(action) {
