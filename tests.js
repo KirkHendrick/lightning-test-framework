@@ -117,7 +117,6 @@ describe('MockComponent', function () {
                 {
                     name: 'testEvent',
                     type: 'testEventType',
-                    fire: function() { }
                 }
             ], [
                 {
@@ -133,6 +132,38 @@ describe('MockComponent', function () {
             testEvent.fire();
 
             assert.ok(eventHandled);
+        });
+
+        it('should be able to handle multiple event handlers on the same event', function() {
+            var firstEventHandled = false,
+                secondEventHandled = false,
+                component = MockComponent([], [], [
+                    {
+                        name: 'testEvent',
+                        type: 'testEventType',
+                    }
+                ], [
+                    {
+                        name: 'testEvent',
+                        event: 'testEventType',
+                        action: function() {
+                            firstEventHandled = true;
+                        }
+                    },
+                    {
+                        name: 'testEvent',
+                        event: 'testEventType',
+                        action: function() {
+                            secondEventHandled = true;
+                        }
+                    }
+                ]),
+                testEvent = component.getEvent('testEvent');
+
+            testEvent.fire();
+
+            assert.ok(firstEventHandled);
+            assert.ok(secondEventHandled);
         });
     });
 });
