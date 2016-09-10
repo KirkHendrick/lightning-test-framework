@@ -13,7 +13,7 @@ describe('MockComponent', function () {
         it('creates a new MockComponent object without the new keyword', function() {
             var component = MockComponent();
 
-            assert.deepEqual(typeof component, 'object')
+            assert.deepEqual('object', typeof component)
         });
     });
 
@@ -28,7 +28,7 @@ describe('MockComponent', function () {
 
             var testAttribute = component.get("v.testAttribute");
 
-            assert.deepEqual(testAttribute.name, 'testAttribute');
+            assert.deepEqual('testAttribute', testAttribute.name);
         });
 
         it('should retrieve the correct attribute value', function () {
@@ -41,7 +41,7 @@ describe('MockComponent', function () {
 
             var testAttribute = component.get("v.testAttribute");
 
-            assert.deepEqual(testAttribute.value, 'testValue');
+            assert.deepEqual('testValue', testAttribute.value);
         });
     });
 
@@ -58,7 +58,7 @@ describe('MockComponent', function () {
             component.set("v.testAttribute", newValue);
 
             var testAttribute = component.get("v.testAttribute");
-            assert.deepEqual(testAttribute.value, newValue);
+            assert.deepEqual(newValue, testAttribute.value);
         });
     });
 
@@ -72,7 +72,7 @@ describe('MockComponent', function () {
 
             var testElement = component.find('testElement');
 
-            assert.deepEqual(testElement.auraId, 'testElement');
+            assert.deepEqual('testElement', testElement.auraId);
         });
     });
 
@@ -88,7 +88,7 @@ describe('MockComponent', function () {
 
             var testEvent = component.getEvent("testEvent");
 
-            assert.deepEqual(testEvent.name, 'testEvent');
+            assert.deepEqual('testEvent', testEvent.name);
         });
     });
 
@@ -312,7 +312,7 @@ describe('$A.util', function() {
                 testObject = {},
                 result = $A.util.isUndefined(testObject);
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
     });
 
@@ -330,7 +330,7 @@ describe('$A.util', function() {
                 testObject = {},
                 result = $A.util.isUndefinedOrNull(testObject);
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
 
         it('should return true if object is null', function() {
@@ -376,7 +376,7 @@ describe('$A.util', function() {
 
             var result = ~element.cssClasses.indexOf('slds-test');
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
     });
 
@@ -408,7 +408,7 @@ describe('$A.util', function() {
 
             var result = $A.util.hasClass(element, 'slds-test');
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
     });
 
@@ -427,7 +427,7 @@ describe('$A.util', function() {
 
             var result = ~element.cssClasses.indexOf('slds-test');
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
 
         it('should add the css class to the element if it does not have it', function() {
@@ -455,7 +455,7 @@ describe('$A.util', function() {
 
             var result = $A.util.getBooleanValue(testValue);
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
 
         it('should return true if value is truthy', function() {
@@ -475,7 +475,7 @@ describe('$A.util', function() {
 
             var result = $A.util.isArray(testValue);
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
 
         it('should return true if value is an array', function() {
@@ -531,7 +531,7 @@ describe('$A.util', function() {
 
             var result = $A.util.isEmpty(testValue);
 
-            assert.deepEqual(result, false);
+            assert.deepEqual(false, result);
         });
     });
 
