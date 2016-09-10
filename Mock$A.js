@@ -38,6 +38,10 @@ var Mock$A = (function Mock$A() {
 
             getBooleanValue : function(value) {
                 return Boolean(value);
+            },
+
+            isArray : function(obj) {
+                return obj.constructor === Array;
             }
         }
     };

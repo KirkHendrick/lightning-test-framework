@@ -3,10 +3,10 @@
  */
 
 var assert = require('assert'),
-    MockComponent = require('./MockComponent').MockComponent,
-    TestController = require('./Controller').Controller,
-    TestHelper = require('./Helper').Helper,
-    Mock$A = require('./Mock$A').Mock$A;
+    MockComponent = require('./../MockComponent').MockComponent,
+    TestController = require('./../Controller').Controller,
+    TestHelper = require('./../Helper').Helper,
+    Mock$A = require('./../Mock$A').Mock$A;
 
 describe('MockComponent', function () {
     describe('#MockComponent()', function() {
@@ -452,6 +452,26 @@ describe('$A', function() {
                 testValue = "test string";
 
             var result = $A.util.getBooleanValue(testValue);
+
+            assert.ok(result);
+        });
+    });
+
+    describe('#isArray()', function() {
+        it('should return false if value is not an array', function() {
+            var $A = Mock$A,
+                testValue = "";
+
+            var result = $A.util.isArray(testValue);
+
+            assert.deepEqual(result, false);
+        });
+
+        it('should return true if value is an array', function() {
+            var $A = Mock$A,
+                testValue = [];
+
+            var result = $A.util.isArray(testValue);
 
             assert.ok(result);
         });
