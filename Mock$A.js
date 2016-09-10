@@ -42,7 +42,17 @@ var Mock$A = (function Mock$A() {
 
             isArray : function(obj) {
                 return obj.constructor === Array;
+            },
+
+            isEmpty : function(value) {
+                if(!value || value.constructor === Array && value.length === 0){
+                    return true;
+                }
+                return false;
             }
+        },
+        enqueueAction : function(action) {
+            action();
         }
     };
 

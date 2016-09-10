@@ -189,8 +189,8 @@ describe('Controller', function() {
                     name: 'testAttribute',
                     value: 'testValue'
                 }
-            ]);
-            var controller = TestController;
+            ]),
+                controller = TestController;
 
             controller.testGet(component);
 
@@ -203,8 +203,8 @@ describe('Controller', function() {
                     name: 'testAttribute',
                     value: 'testValue'
                 }
-            ]);
-            var controller = TestController;
+            ]),
+                controller = TestController;
 
             controller.testSet(component);
 
@@ -216,8 +216,8 @@ describe('Controller', function() {
                 {
                     name: 'testElement',
                 }
-            ]);
-            var controller = TestController;
+            ]),
+                controller = TestController;
 
             controller.testFind(component);
 
@@ -232,9 +232,9 @@ describe('Controller', function() {
                     name: 'testAttribute',
                     value: 'testValue'
                 }
-            ]);
-            var controller = TestController;
-            var helper = TestHelper;
+            ]),
+                controller = TestController,
+                helper = TestHelper;
 
             controller.testHelperGet(component, null, helper);
 
@@ -261,8 +261,8 @@ describe('Helper', function() {
                     name: 'testAttribute',
                     value: 'testValue'
                 }
-            ]);
-            var helper = TestHelper;
+            ]),
+                helper = TestHelper;
 
             helper.testGet(component);
 
@@ -282,21 +282,35 @@ describe('Helper', function() {
 });
 
 describe('$A', function() {
+    describe('#enqueueAction()', function() {
+        it('should invoke the action', function() {
+            var $A = Mock$A,
+                actionInvoked = false,
+                testAction = function() {
+                    actionInvoked = true;
+                };
+
+            $A.enqueueAction(testAction);
+
+            assert.ok(actionInvoked);
+        });
+    });
+});
+
+describe('$A.util', function() {
     describe('#isUndefined()', function() {
         it('should return true if object is undefined', function() {
-           var $A = Mock$A;
-           var testObject;
+            var $A = Mock$A,
+                testObject,
+                result = $A.util.isUndefined(testObject);
 
-           var result = $A.util.isUndefined(testObject);
-
-           assert.ok(result);
+            assert.ok(result);
         });
 
         it('should return false if object is not undefined', function() {
-            var $A = Mock$A;
-            var testObject = {};
-
-            var result = $A.util.isUndefined(testObject);
+            var $A = Mock$A,
+                testObject = {},
+                result = $A.util.isUndefined(testObject);
 
             assert.deepEqual(result, false);
         });
@@ -304,28 +318,25 @@ describe('$A', function() {
 
     describe('#isUndefinedOrNull()', function() {
         it('should return true if undefined', function() {
-            var $A = Mock$A;
-            var testObject;
-
-            var result = $A.util.isUndefinedOrNull(testObject);
+            var $A = Mock$A,
+                testObject,
+                result = $A.util.isUndefinedOrNull(testObject);
 
             assert.ok(result);
         });
 
         it('should return false if object is not undefined', function() {
-            var $A = Mock$A;
-            var testObject = {};
-
-            var result = $A.util.isUndefinedOrNull(testObject);
+            var $A = Mock$A,
+                testObject = {},
+                result = $A.util.isUndefinedOrNull(testObject);
 
             assert.deepEqual(result, false);
         });
 
         it('should return true if object is null', function() {
-            var $A = Mock$A;
-            var testObject = null;
-
-            var result = $A.util.isUndefinedOrNull(testObject);
+            var $A = Mock$A,
+                testObject = null,
+                result = $A.util.isUndefinedOrNull(testObject);
 
             assert.ok(result);
         });
@@ -334,13 +345,13 @@ describe('$A', function() {
     describe('#addClass()', function() {
         it('should add the specified css class to an element', function() {
             var component = MockComponent([], [
-                {
-                    auraId: 'testElement',
-                    cssClasses: ''
-                }
-            ]),
-                $A = Mock$A;
-            var element = component.find('testElement');
+                    {
+                        auraId: 'testElement',
+                        cssClasses: ''
+                    }
+                ]),
+                $A = Mock$A,
+                element = component.find('testElement');
 
             $A.util.addClass(element, 'slds-test');
 
@@ -358,8 +369,8 @@ describe('$A', function() {
                         cssClasses: 'slds-test'
                     }
                 ]),
-                $A = Mock$A;
-            var element = component.find('testElement');
+                $A = Mock$A,
+                element = component.find('testElement');
 
             $A.util.removeClass(element, 'slds-test');
 
@@ -377,8 +388,8 @@ describe('$A', function() {
                         cssClasses: 'slds-test'
                     }
                 ]),
-                $A = Mock$A;
-            var element = component.find('testElement');
+                $A = Mock$A,
+                element = component.find('testElement');
 
             var result = $A.util.hasClass(element, 'slds-test');
 
@@ -392,8 +403,8 @@ describe('$A', function() {
                         cssClasses: 'slds-different'
                     }
                 ]),
-                $A = Mock$A;
-            var element = component.find('testElement');
+                $A = Mock$A,
+                element = component.find('testElement');
 
             var result = $A.util.hasClass(element, 'slds-test');
 
@@ -409,8 +420,8 @@ describe('$A', function() {
                         cssClasses: 'slds-test'
                     }
                 ]),
-                $A = Mock$A;
-            var element = component.find('testElement');
+                $A = Mock$A,
+                element = component.find('testElement');
 
             $A.util.toggleClass(element, 'slds-test');
 
@@ -426,8 +437,8 @@ describe('$A', function() {
                         cssClasses: ''
                     }
                 ]),
-                $A = Mock$A;
-            var element = component.find('testElement');
+                $A = Mock$A,
+                element = component.find('testElement');
 
             $A.util.toggleClass(element, 'slds-test');
 
@@ -476,4 +487,52 @@ describe('$A', function() {
             assert.ok(result);
         });
     });
+
+    describe('#isEmpty()', function() {
+        it('should return false if value is not empty', function() {
+            var $A = Mock$A,
+                testValue = "test";
+
+            var result = $A.util.isEmpty(testValue);
+
+            assert.deepEqual(result, false);
+        });
+
+        it('should return true if value is an empty array', function() {
+            var $A = Mock$A,
+                testValue = [];
+
+            var result = $A.util.isEmpty(testValue);
+
+            assert.ok(result);
+        });
+
+        it('should return true if value is undefined', function() {
+            var $A = Mock$A,
+                testValue = undefined;
+
+            var result = $A.util.isEmpty(testValue);
+
+            assert.ok(result);
+        });
+
+        it('should return true if value is null', function() {
+            var $A = Mock$A,
+                testValue = null;
+
+            var result = $A.util.isEmpty(testValue);
+
+            assert.ok(result);
+        });
+
+        it('should return false if value is a non-empty array', function() {
+            var $A = Mock$A,
+                testValue = ['test'];
+
+            var result = $A.util.isEmpty(testValue);
+
+            assert.deepEqual(result, false);
+        });
+    });
+
 });
