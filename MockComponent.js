@@ -6,8 +6,8 @@
 
     'use strict';
 
-    var MockComponent = function(attributes, elements, registeredEvents, eventHandlers) {
-        return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers);
+    var MockComponent = function(attributes, elements, registeredEvents, eventHandlers, controller) {
+        return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
     };
 
 
@@ -42,14 +42,19 @@
             })[0];
 
             return event;
+        },
+
+        getReference : function (methodName) {
+            return this.controller[methodName.slice(2)];
         }
     };
 
-    MockComponent.init = function(attributes, elements, registeredEvents, eventHandlers) {
+    MockComponent.init = function(attributes, elements, registeredEvents, eventHandlers, controller) {
         this.attributes = attributes || [];
         this.elements = elements || [];
         this.registeredEvents = registeredEvents || [];
         this.eventHandlers = eventHandlers || [];
+        this.controller = controller || {};
 
         associateEventHandlers.call(this);
     };

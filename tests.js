@@ -92,6 +92,19 @@ describe('MockComponent', function () {
         });
     });
 
+    describe('#getReference()', function () {
+        it('should return a reference to a controller function, and execute it without error', function () {
+            var component = MockComponent([], [], [], [], {
+                    testMethod: function() {}
+                }),
+                testMethod = component.getReference('c.testMethod');
+
+            testMethod();
+
+            assert.ok(true, 'did not throw error');
+        });
+    });
+
     describe('events', function() {
         it('should be able to fire events', function() {
             var eventFired = false,
