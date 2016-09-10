@@ -6,11 +6,10 @@
 
     'use strict';
 
-    var attributes = [];
-    var elements = [];
-
-    var MockComponent = function(attributes, elements) {
-        return new MockComponent.init(attributes, elements);
+    var MockComponent = function(attributes, elements,
+                                 registeredEvents, eventHandlers) {
+        return new MockComponent.init(attributes, elements,
+            registeredEvents, eventHandlers);
     };
 
 
@@ -37,15 +36,46 @@
             })[0];
 
             return element;
+        },
+
+        getEvent : function(eventName) {
+            var event = this.registeredEvents.filter(function(obj) {
+                return obj.name === eventName;
+            })[0];
+
+            return event;
         }
     };
 
-    MockComponent.init = function(attributes, elements) {
-
+    MockComponent.init = function(attributes, elements,
+                                  registeredEvents, eventHandlers) {
         this.attributes = attributes || [];
         this.elements = elements || [];
+        this.registeredEvents = registeredEvents || [];
+        this.eventHandlers = eventHandlers || [];
 
+        associateEventHandlers.call(this);
     };
+
+    function associateEventHandlers() {
+        var i, j, handler, action, registeredEvent, associatedHandler;
+
+        for(i = 0; i < this.registeredEvents.length; i++) {
+            registeredEvent = this.registeredEvents[i];
+
+            for(j = 0; j < this.eventHandlers.length; j++) {
+                handler = this.eventHandlers[j];
+
+                if(handler.name === registeredEvent.name) {
+                    associatedHandler = handler;
+                }
+            }
+
+            if(associatedHandler) {
+                registeredEvent['fire'] = associatedHandler.action;
+            }
+        }
+    }
 
     MockComponent.init.prototype = MockComponent.prototype;
 

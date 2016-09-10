@@ -75,6 +75,66 @@ describe('MockComponent', function () {
             assert.deepEqual(testElement.name, 'testElement');
         });
     });
+
+    describe('#getEvent()', function () {
+        it('should retrieve the correct event', function () {
+            var component = MockComponent([], [], [
+                {
+                    name: 'testEvent',
+                    event: 'testEventType',
+                    action: function() {}
+                }
+            ]);
+
+            var testEvent = component.getEvent("testEvent");
+
+            assert.deepEqual(testEvent.name, 'testEvent');
+        });
+    });
+
+    describe('events', function() {
+        it('should be able to fire events', function() {
+            var eventFired = false,
+                component = MockComponent([], [], [
+                {
+                    name: 'testEvent',
+                    type: 'testEventType',
+                    fire: function() {
+                        eventFired = true;
+                    }
+                }
+            ]),
+                testEvent = component.getEvent('testEvent');
+
+            testEvent.fire();
+
+            assert.ok(eventFired);
+        });
+
+        it('should be able to handle events fired and registered from the same component', function() {
+            var eventHandled = false,
+                component = MockComponent([], [], [
+                {
+                    name: 'testEvent',
+                    type: 'testEventType',
+                    fire: function() { }
+                }
+            ], [
+                {
+                    name: 'testEvent',
+                    event: 'testEventType',
+                    action: function() {
+                        eventHandled = true;
+                    }
+                }
+            ]),
+                testEvent = component.getEvent('testEvent');
+
+            testEvent.fire();
+
+            assert.ok(eventHandled);
+        });
+    });
 });
 
 describe('Controller', function() {
