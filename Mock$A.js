@@ -1,6 +1,8 @@
 /**
  * Created by khendrick on 9/9/16.
  */
+var MockComponent = require('./MockComponent').MockComponent;
+
 var Mock$A = (function Mock$A() {
 
     'use strict';
@@ -60,11 +62,16 @@ var Mock$A = (function Mock$A() {
                 return false;
             }
         },
+
         enqueueAction : function(action) {
             action();
+        },
+
+        createComponent: function(type, elements, callback) {
+            var component = MockComponent([], [elements]);
+            callback(component);
         }
     };
-
 
 })();
 

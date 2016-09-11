@@ -178,6 +178,28 @@ describe('MockComponent', function () {
             assert.ok(firstEventHandled);
             assert.ok(secondEventHandled);
         });
+
+        //TODO: it('should be able to handle events fired by child components', function() {
+        //     var eventHandled = false;
+        //     var innerComponent =
+        //              {
+        //                 name: 'testEvent'
+        //              };
+        //     var component = MockComponent([], $A.createComponent(innerComponent), [], [
+        //         {
+        //             name: 'testEvent',
+        //             action: function() {
+        //                eventHandled = true;
+        //             }
+        //         }
+        //     ]);
+        //
+        //     var testEvent = innerComponent.getEvent('testEvent');
+        //
+        //     testEvent.fire();
+        //
+        //     assert.ok(eventHandled);
+        // });
     });
 });
 
@@ -293,6 +315,50 @@ describe('$A', function() {
             $A.enqueueAction(testAction);
 
             assert.ok(actionInvoked);
+        });
+    });
+
+    describe('#createComponent()', function() {
+        it('should create a component with the specified ui attributes', function() {
+            var $A = Mock$A,
+                testComponent;
+
+            $A.createComponent('TestComponent',
+                {'auraId': 'testElement'},
+                function (component) {
+                    testComponent = component;
+                }
+            );
+
+            var testElement = testComponent.find('testElement');
+
+            assert.ok(testElement);
+        });
+
+        it('should invoke callback once finished', function() {
+            var $A = Mock$A,
+                callbackInvoked = false;
+
+            $A.createComponent('TestComponent', {}, function callback() {
+                callbackInvoked = true;
+            });
+
+            assert.ok(callbackInvoked);
+        });
+
+        it('should be able to access created component through the callback', function () {
+            var $A = Mock$A,
+                testComponent;
+
+            $A.createComponent('TestComponent', {},
+                function callback(component) {
+                   testComponent = component;
+                }
+            );
+
+            var result = testComponent instanceof MockComponent;
+
+            assert.ok(result);
         });
     });
 });
