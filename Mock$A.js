@@ -70,6 +70,16 @@ var Mock$A = (function Mock$A() {
         createComponent: function(type, elements, callback) {
             var component = MockComponent([], [elements]);
             callback(component);
+        },
+
+        createComponents: function(components, callback) {
+            var createdComponents = [];
+            for(var i = 0; i < components.length; i++) {
+                this.createComponent(components[i][0], components[i][1], function(cmp) {
+                   createdComponents.push(cmp);
+                });
+            }
+            callback(createdComponents);
         }
     };
 

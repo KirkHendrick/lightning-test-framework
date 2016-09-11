@@ -319,9 +319,37 @@ describe('$A', function() {
     });
 
     describe('#createComponent()', function() {
-        it('should create a component with the specified ui attributes', function() {
+        it('should invoke callback once finished', function() {
+            var $A = Mock$A,
+                callbackInvoked = false;
+
+            $A.createComponent('TestComponent', {}, function () {
+                callbackInvoked = true;
+            });
+
+            assert.ok(callbackInvoked);
+        });
+
+        it('should return created component through the callback', function () {
             var $A = Mock$A,
                 testComponent;
+
+            $A.createComponent('TestComponent', {},
+                function callback(component) {
+                    testComponent = component;
+                }
+            );
+
+            //TODO: is this really how I want the API to return the results?
+            var result = testComponent instanceof MockComponent;
+
+            assert.ok(result);
+        });
+
+        it('should create a component with the specified ui attributes', function() {
+            var $A = Mock$A,
+                testComponent,
+                testElement;
 
             $A.createComponent('TestComponent',
                 {'auraId': 'testElement'},
@@ -330,35 +358,51 @@ describe('$A', function() {
                 }
             );
 
-            var testElement = testComponent.find('testElement');
+            testElement = testComponent.find('testElement');
 
-            assert.ok(testElement);
+            assert.deepEqual('testElement', testElement.auraId);
         });
+    });
 
-        it('should invoke callback once finished', function() {
+    describe('#createComponents()', function() {
+        it('should return components in the callback', function() {
             var $A = Mock$A,
-                callbackInvoked = false;
+                testComponents = [],
+                firstComponent = [],
+                secondComponent = [],
+                callback = function(components) {
+                    testComponents = components;
+                };
 
-            $A.createComponent('TestComponent', {}, function callback() {
-                callbackInvoked = true;
+            $A.createComponents([firstComponent, secondComponent], callback);
+
+            var results = testComponents.filter(function(cmp) {
+                return cmp instanceof MockComponent;
             });
 
-            assert.ok(callbackInvoked);
+            for(var i = 0; i < results.length; i++) {
+                assert.ok(results[i]);
+            }
         });
 
-        it('should be able to access created component through the callback', function () {
+        it('should create components with the specified ui attributes', function() {
             var $A = Mock$A,
-                testComponent;
+                testComponents = [],
+                firstComponent = ['TestComponent', {'auraId': 'firstElement'}],
+                secondComponent = ['TestComponent', {'auraId': 'secondElement'}],
+                callback = function(components) {
+                    testComponents = components;
+                },
+                firstElement,
+                secondElement;
 
-            $A.createComponent('TestComponent', {},
-                function callback(component) {
-                   testComponent = component;
-                }
-            );
+            $A.createComponents([firstComponent, secondComponent], callback);
 
-            var result = testComponent instanceof MockComponent;
+            firstElement = testComponents[0].find('firstElement');
+            secondElement = testComponents[1].find('secondElement');
 
-            assert.ok(result);
+            assert.deepEqual('firstElement', firstElement.auraId);
+            assert.deepEqual('secondElement', secondElement.auraId);
         });
     });
 });
