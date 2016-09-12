@@ -64,7 +64,10 @@ var Mock$A = (function Mock$A() {
         },
 
         enqueueAction : function(action) {
-            action();
+            const response = action();
+            if(action.callback) {
+                action.callback(response);
+            }
         },
 
         createComponent: function(type, elements, callback) {

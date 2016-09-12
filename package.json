@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/KirkHendrick/lightning-test-framework.git"
+    "url": "git+https://github.com/KirkHendrick/lightning-test-framework.git"
   },
   "author": "Kirk Hendrick",
   "license": "ISC",
@@ -17,5 +17,12 @@
     "gulp-mocha": "^3.0.1",
     "gulp-watch": "^4.3.9",
     "mocha": "^3.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/KirkHendrick/lightning-test-framework/issues"
+  },
+  "homepage": "https://github.com/KirkHendrick/lightning-test-framework#readme",
+  "directories": {
+    "test": "test"
   }
 }

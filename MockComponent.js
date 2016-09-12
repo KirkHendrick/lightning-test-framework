@@ -12,6 +12,14 @@
 
     MockComponent.prototype = {
         get: function(attributeName) {
+            if(attributeName[0] === 'c') {
+            	var method = this.getReference(attributeName);
+				method['setCallback'] = function(context, callback) {
+					method['callback'] = callback;
+                };
+				return method;
+            }
+
             var attribute = this.attributes.filter(function(obj) {
                 return obj.name === attributeName.slice(2);
             })[0];

@@ -43,6 +43,34 @@ describe('MockComponent', function () {
 
             assert.deepEqual('testValue', testAttribute.value);
         });
+
+        it('should retrieve a controller method reference when specified with c.', function() {
+            var component = MockComponent([], [], [], [], {
+                testMethod: function() {}
+            }),
+                testMethod;
+
+            testMethod = component.get("c.testMethod");
+
+            assert.deepEqual('function', typeof testMethod);
+        });
+
+        it('should receive controller method response through a callback', function() {
+            var $A = Mock$A,
+                testResponse,
+                component = MockComponent([], [], [], [], {
+                    testMethod: function() { return 'testResponse'}
+                }),
+                testMethod = component.get("c.testMethod");
+
+            testMethod.setCallback(this, function(response) {
+                testResponse = response;
+            });
+
+            $A.enqueueAction(testMethod);
+
+            assert.deepEqual('testResponse', testResponse);
+        });
     });
 
     describe('#set()', function () {
@@ -178,28 +206,6 @@ describe('MockComponent', function () {
             assert.ok(firstEventHandled);
             assert.ok(secondEventHandled);
         });
-
-        //TODO: it('should be able to handle events fired by child components', function() {
-        //     var eventHandled = false;
-        //     var innerComponent =
-        //              {
-        //                 name: 'testEvent'
-        //              };
-        //     var component = MockComponent([], $A.createComponent(innerComponent), [], [
-        //         {
-        //             name: 'testEvent',
-        //             action: function() {
-        //                eventHandled = true;
-        //             }
-        //         }
-        //     ]);
-        //
-        //     var testEvent = innerComponent.getEvent('testEvent');
-        //
-        //     testEvent.fire();
-        //
-        //     assert.ok(eventHandled);
-        // });
     });
 });
 
@@ -340,7 +346,6 @@ describe('$A', function() {
                 }
             );
 
-            //TODO: is this really how I want the API to return the results?
             var result = testComponent instanceof MockComponent;
 
             assert.ok(result);
