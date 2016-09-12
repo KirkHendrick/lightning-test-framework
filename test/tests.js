@@ -410,6 +410,24 @@ describe('$A', function() {
             assert.deepEqual('secondElement', secondElement.auraId);
         });
     });
+
+    describe('#get()', function() {
+        it('should get an application event', function() {
+        	var $A = Mock$A;
+
+            var appEvent = $A.get('e.c:appEvent');
+
+			assert.deepEqual('appEvent', appEvent.name);
+        });
+
+        it('should be able to fire application event', function() {
+            var $A = Mock$A;
+
+            var appEvent = $A.get('e.c:appEvent');
+
+            assert.deepEqual('function', typeof appEvent.fire);
+        });
+    })
 });
 
 describe('$A.util', function() {
@@ -705,5 +723,23 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
         //TODO: it('should return false if value is a DOM element', function() { });
+    });
+});
+
+describe('App', function() {
+    describe('events', function() {
+        //TODO: use $A.get('e.c:testEvent'), fire it and handle the result
+
+        // it('should be able to register events', function() {
+        //     var app = MockApp([
+        //         {
+        //             name: 'testEvent'
+        //         }
+        //     ]),
+        //         $A = Mock$A;
+		//
+		//
+        //     assert.ok(false);
+        // });
     });
 });

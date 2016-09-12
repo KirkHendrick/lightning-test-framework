@@ -83,6 +83,13 @@ var Mock$A = (function Mock$A() {
                 });
             }
             callback(createdComponents);
+        },
+
+        get: function(eventName) {
+        	return {
+        		name: eventName.slice(4),
+                fire : function(){}
+            }
         }
     };
 
