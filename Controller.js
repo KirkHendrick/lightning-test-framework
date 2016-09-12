@@ -31,6 +31,6 @@ var TestController = (function TestController($A) {
     };
 
 
-})(Mock$A);
+})(Mock$A());
 
 exports.Controller = TestController;

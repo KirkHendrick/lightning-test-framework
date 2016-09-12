@@ -4,11 +4,16 @@
 var MockComponent = require('./MockComponent').MockComponent;
     //MockApp = require('./MockApp').MockApp;
 
-var Mock$A = (function Mock$A() {
+(function(exports) {
 
     'use strict';
 
-    return {
+    var Mock$A = function(app) {
+        return new Mock$A.init(app);
+    };
+
+    Mock$A.prototype = {
+
         util : {
             isUndefined : function(obj) {
                 return obj === undefined;
@@ -100,13 +105,16 @@ var Mock$A = (function Mock$A() {
                 name: eventName.slice(4),
                 fire : function() {}
             }
-        },
-
-        setApp: function(app) {
-            this.app = app;
         }
     };
 
-})();
+    Mock$A.init = function(app) {
+        this.app = app;
+    };
 
-exports.Mock$A = Mock$A;
+    Mock$A.init.prototype = Mock$A.prototype;
+
+    exports.Mock$A = Mock$A;
+
+})(this);
+

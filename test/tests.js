@@ -18,6 +18,7 @@ describe('MockComponent', function () {
         });
     });
 
+
     describe('#get()', function () {
         it('should retrieve the correct attribute', function () {
             var component = MockComponent([
@@ -57,7 +58,7 @@ describe('MockComponent', function () {
         });
 
         it('should receive controller method response through a callback', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testResponse,
                 component = MockComponent([], [], [], [], {
                     testMethod: function() { return 'testResponse'}
@@ -313,7 +314,7 @@ describe('Helper', function() {
 describe('$A', function() {
     describe('#enqueueAction()', function() {
         it('should invoke the action', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 actionInvoked = false,
                 testAction = function() {
                     actionInvoked = true;
@@ -327,7 +328,7 @@ describe('$A', function() {
 
     describe('#createComponent()', function() {
         it('should invoke callback once finished', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 callbackInvoked = false;
 
             $A.createComponent('TestComponent', {}, function () {
@@ -338,7 +339,7 @@ describe('$A', function() {
         });
 
         it('should return created component through the callback', function () {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testComponent;
 
             $A.createComponent('TestComponent', {},
@@ -353,7 +354,7 @@ describe('$A', function() {
         });
 
         it('should create a component with the specified ui attributes', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testComponent,
                 testElement;
 
@@ -372,7 +373,7 @@ describe('$A', function() {
 
     describe('#createComponents()', function() {
         it('should return components in the callback', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testComponents = [],
                 firstComponent = [],
                 secondComponent = [],
@@ -392,7 +393,7 @@ describe('$A', function() {
         });
 
         it('should create components with the specified ui attributes', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testComponents = [],
                 firstComponent = ['TestComponent', {'auraId': 'firstElement'}],
                 secondComponent = ['TestComponent', {'auraId': 'secondElement'}],
@@ -414,15 +415,12 @@ describe('$A', function() {
 
     describe('#get()', function() {
         it('should get an application event', function() {
-        	var $A = Mock$A,
-                app = MockApp([
+            var app = MockApp([
                     {
                         name: 'appEvent'
                     }
-                ]);
-
-            //TODO: remove this method
-            $A.setApp(app);
+                ]),
+                $A = Mock$A(app);
 
             var appEvent = $A.get('e.c:appEvent');
 
@@ -434,7 +432,7 @@ describe('$A', function() {
 describe('$A.util', function() {
     describe('#isUndefined()', function() {
         it('should return true if object is undefined', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testObject,
                 result = $A.util.isUndefined(testObject);
 
@@ -442,7 +440,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if object is not undefined', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testObject = {},
                 result = $A.util.isUndefined(testObject);
 
@@ -452,7 +450,7 @@ describe('$A.util', function() {
 
     describe('#isUndefinedOrNull()', function() {
         it('should return true if undefined', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testObject,
                 result = $A.util.isUndefinedOrNull(testObject);
 
@@ -460,7 +458,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if object is not undefined', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testObject = {},
                 result = $A.util.isUndefinedOrNull(testObject);
 
@@ -468,7 +466,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if object is null', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testObject = null,
                 result = $A.util.isUndefinedOrNull(testObject);
 
@@ -484,7 +482,7 @@ describe('$A.util', function() {
                         cssClasses: ''
                     }
                 ]),
-                $A = Mock$A,
+                $A = Mock$A(),
                 element = component.find('testElement');
 
             $A.util.addClass(element, 'slds-test');
@@ -503,7 +501,7 @@ describe('$A.util', function() {
                         cssClasses: 'slds-test'
                     }
                 ]),
-                $A = Mock$A,
+                $A = Mock$A(),
                 element = component.find('testElement');
 
             $A.util.removeClass(element, 'slds-test');
@@ -522,7 +520,7 @@ describe('$A.util', function() {
                         cssClasses: 'slds-test'
                     }
                 ]),
-                $A = Mock$A,
+                $A = Mock$A(),
                 element = component.find('testElement');
 
             var result = $A.util.hasClass(element, 'slds-test');
@@ -537,7 +535,7 @@ describe('$A.util', function() {
                         cssClasses: 'slds-different'
                     }
                 ]),
-                $A = Mock$A,
+                $A = Mock$A(),
                 element = component.find('testElement');
 
             var result = $A.util.hasClass(element, 'slds-test');
@@ -554,7 +552,7 @@ describe('$A.util', function() {
                         cssClasses: 'slds-test'
                     }
                 ]),
-                $A = Mock$A,
+                $A = Mock$A(),
                 element = component.find('testElement');
 
             $A.util.toggleClass(element, 'slds-test');
@@ -571,7 +569,7 @@ describe('$A.util', function() {
                         cssClasses: ''
                     }
                 ]),
-                $A = Mock$A,
+                $A = Mock$A(),
                 element = component.find('testElement');
 
             $A.util.toggleClass(element, 'slds-test');
@@ -584,7 +582,7 @@ describe('$A.util', function() {
 
     describe('#getBooleanValue()', function() {
         it('should return false if value is falsy', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = "";
 
             var result = $A.util.getBooleanValue(testValue);
@@ -593,7 +591,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if value is truthy', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = "test string";
 
             var result = $A.util.getBooleanValue(testValue);
@@ -604,7 +602,7 @@ describe('$A.util', function() {
 
     describe('#isArray()', function() {
         it('should return false if value is not an array', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = "";
 
             var result = $A.util.isArray(testValue);
@@ -613,7 +611,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if value is an array', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = [];
 
             var result = $A.util.isArray(testValue);
@@ -624,7 +622,7 @@ describe('$A.util', function() {
 
     describe('#isEmpty()', function() {
         it('should return false if value is not empty', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = "test";
 
             var result = $A.util.isEmpty(testValue);
@@ -633,7 +631,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if value is an empty array', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = [];
 
             var result = $A.util.isEmpty(testValue);
@@ -642,7 +640,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if value is undefined', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = undefined;
 
             var result = $A.util.isEmpty(testValue);
@@ -651,7 +649,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if value is null', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = null;
 
             var result = $A.util.isEmpty(testValue);
@@ -660,7 +658,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if value is a non-empty array', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = ['test'];
 
             var result = $A.util.isEmpty(testValue);
@@ -671,7 +669,7 @@ describe('$A.util', function() {
 
     describe('#isObject()', function() {
         it('should return false if value is falsy', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = null;
 
             var result = $A.util.isObject(testValue);
@@ -680,7 +678,7 @@ describe('$A.util', function() {
         });
 
         it('should return true if value is an empty object', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = {};
 
             var result = $A.util.isObject(testValue);
@@ -689,7 +687,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if value is an array', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = [];
 
             var result = $A.util.isObject(testValue);
@@ -698,7 +696,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if value is a function', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = function() {};
 
             var result = $A.util.isObject(testValue);
@@ -707,7 +705,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if value is a string', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = "test string";
 
             var result = $A.util.isObject(testValue);
@@ -716,7 +714,7 @@ describe('$A.util', function() {
         });
 
         it('should return false if value is a number', function() {
-            var $A = Mock$A,
+            var $A = Mock$A(),
                 testValue = 8;
 
             var result = $A.util.isObject(testValue);
@@ -741,9 +739,7 @@ describe('App', function() {
                         eventHandled = true;
                     }
                 }]),
-                $A = Mock$A;
-
-            $A.setApp(app);
+                $A = Mock$A(app);
 
             var testEvent = $A.get('e.c:testEvent');
 

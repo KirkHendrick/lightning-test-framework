@@ -18,6 +18,6 @@ var TestHelper = (function TestHelper($A) {
         }
     };
 
-})(Mock$A);
+})(Mock$A());
 
 exports.Helper = TestHelper;
