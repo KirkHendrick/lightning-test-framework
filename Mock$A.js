@@ -2,41 +2,40 @@
  * Created by khendrick on 9/9/16.
  */
 var MockComponent = require('./MockComponent').MockComponent;
-    //MockApp = require('./MockApp').MockApp;
 
-(function(exports) {
+(function (exports) {
 
     'use strict';
 
-    var Mock$A = function(app) {
+    var Mock$A = function (app) {
         return new Mock$A.init(app);
     };
 
     Mock$A.prototype = {
 
-        util : {
-            isUndefined : function(obj) {
+        util: {
+            isUndefined: function (obj) {
                 return obj === undefined;
             },
 
-            isUndefinedOrNull : function(obj) {
+            isUndefinedOrNull: function (obj) {
                 return (obj === undefined || obj === null);
             },
 
-            addClass : function(element, cssClass) {
+            addClass: function (element, cssClass) {
                 element.cssClasses = element.cssClasses.concat(cssClass);
             },
 
-            removeClass : function(element, cssClass) {
+            removeClass: function (element, cssClass) {
                 element.cssClasses = element.cssClasses.replace(cssClass, '');
             },
 
-            hasClass : function(element, cssClass) {
+            hasClass: function (element, cssClass) {
                 return ~element.cssClasses.indexOf(cssClass);
             },
 
-            toggleClass : function(element, cssClass) {
-                if(this.hasClass(element, cssClass)) {
+            toggleClass: function (element, cssClass) {
+                if (this.hasClass(element, cssClass)) {
                     this.removeClass(element, cssClass);
                 }
                 else {
@@ -44,24 +43,24 @@ var MockComponent = require('./MockComponent').MockComponent;
                 }
             },
 
-            getBooleanValue : function(value) {
+            getBooleanValue: function (value) {
                 return Boolean(value);
             },
 
-            isArray : function(obj) {
+            isArray: function (obj) {
                 return obj.constructor === Array;
             },
 
-            isEmpty : function(value) {
-                if(!value || value.constructor === Array && value.length === 0){
+            isEmpty: function (value) {
+                if (!value || value.constructor === Array && value.length === 0) {
                     return true;
                 }
                 return false;
             },
 
-            isObject : function(value) {
-                if(value &&
-                   value.constructor !== Array &&
+            isObject: function (value) {
+                if (value &&
+                    value.constructor !== Array &&
                     typeof value === 'object') {
                     return true;
                 }
@@ -69,33 +68,33 @@ var MockComponent = require('./MockComponent').MockComponent;
             }
         },
 
-        enqueueAction : function(action) {
+        enqueueAction: function (action) {
             const response = action();
-            if(action.callback) {
+            if (action.callback) {
                 action.callback(response);
             }
         },
 
-        createComponent: function(type, elements, callback) {
+        createComponent: function (type, elements, callback) {
             var component = MockComponent([], [elements]);
             callback(component);
         },
 
-        createComponents: function(components, callback) {
+        createComponents: function (components, callback) {
             var createdComponents = [];
-            for(var i = 0; i < components.length; i++) {
-                this.createComponent(components[i][0], components[i][1], function(cmp) {
-                   createdComponents.push(cmp);
+            for (var i = 0; i < components.length; i++) {
+                this.createComponent(components[i][0], components[i][1], function (cmp) {
+                    createdComponents.push(cmp);
                 });
             }
             callback(createdComponents);
         },
 
-        get: function(eventName) {
-            if(this.app) {
+        get: function (eventName) {
+            if (this.app) {
                 var events = this.app.getEvents();
 
-                var event = events.filter(function(obj) {
+                var event = events.filter(function (obj) {
                     return obj.name === eventName.slice(4);
                 })[0];
 
@@ -103,12 +102,13 @@ var MockComponent = require('./MockComponent').MockComponent;
             }
             return {
                 name: eventName.slice(4),
-                fire : function() {}
+                fire: function () {
+                }
             }
         }
     };
 
-    Mock$A.init = function(app) {
+    Mock$A.init = function (app) {
         this.app = app;
     };
 

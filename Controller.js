@@ -8,24 +8,24 @@ var TestController = (function TestController($A) {
     'use strict';
 
     return {
-        
-        testGet : function(component) {
+
+        testGet: function (component) {
             var testAttribute = component.get('v.testAttribute');
         },
 
-        testSet : function(component) {
+        testSet: function (component) {
             component.set('v.testAttribute', 'newValue');
         },
 
-        testFind : function(component) {
+        testFind: function (component) {
             var testElement = component.find('testElement');
         },
 
-        testHelperGet : function(component, event, helper) {
+        testHelperGet: function (component, event, helper) {
             helper.testGet(component);
         },
 
-        test$AisUndefined : function(obj) {
+        test$AisUndefined: function (obj) {
             $A.util.isUndefined(obj);
         }
     };

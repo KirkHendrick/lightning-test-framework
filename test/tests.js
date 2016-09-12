@@ -10,8 +10,8 @@ var assert = require('assert'),
     Mock$A = require('./../Mock$A').Mock$A;
 
 describe('MockComponent', function () {
-    describe('#MockComponent()', function() {
-        it('creates a new MockComponent object without the new keyword', function() {
+    describe('#MockComponent()', function () {
+        it('creates a new MockComponent object without the new keyword', function () {
             var component = MockComponent();
 
             assert.deepEqual('object', typeof component)
@@ -46,10 +46,11 @@ describe('MockComponent', function () {
             assert.deepEqual('testValue', testAttribute.value);
         });
 
-        it('should retrieve a controller method reference when specified with c.', function() {
+        it('should retrieve a controller method reference when specified with c.', function () {
             var component = MockComponent([], [], [], [], {
-                testMethod: function() {}
-            }),
+                    testMethod: function () {
+                    }
+                }),
                 testMethod;
 
             testMethod = component.get("c.testMethod");
@@ -57,15 +58,17 @@ describe('MockComponent', function () {
             assert.deepEqual('function', typeof testMethod);
         });
 
-        it('should receive controller method response through a callback', function() {
+        it('should receive controller method response through a callback', function () {
             var $A = Mock$A(),
                 testResponse,
                 component = MockComponent([], [], [], [], {
-                    testMethod: function() { return 'testResponse'}
+                    testMethod: function () {
+                        return 'testResponse'
+                    }
                 }),
                 testMethod = component.get("c.testMethod");
 
-            testMethod.setCallback(this, function(response) {
+            testMethod.setCallback(this, function (response) {
                 testResponse = response;
             });
 
@@ -92,8 +95,8 @@ describe('MockComponent', function () {
         });
     });
 
-    describe('#find()', function() {
-        it('should find the correct element by name', function() {
+    describe('#find()', function () {
+        it('should find the correct element by name', function () {
             var component = MockComponent([], [
                 {
                     auraId: 'testElement'
@@ -112,7 +115,8 @@ describe('MockComponent', function () {
                 {
                     name: 'testEvent',
                     event: 'testEventType',
-                    action: function() {}
+                    action: function () {
+                    }
                 }
             ]);
 
@@ -125,7 +129,8 @@ describe('MockComponent', function () {
     describe('#getReference()', function () {
         it('should return a reference to a controller function, and execute it without error', function () {
             var component = MockComponent([], [], [], [], {
-                    testMethod: function() {}
+                    testMethod: function () {
+                    }
                 }),
                 testMethod = component.getReference('c.testMethod');
 
@@ -135,18 +140,18 @@ describe('MockComponent', function () {
         });
     });
 
-    describe('events', function() {
-        it('should be able to fire events', function() {
+    describe('events', function () {
+        it('should be able to fire events', function () {
             var eventFired = false,
                 component = MockComponent([], [], [
-                {
-                    name: 'testEvent',
-                    type: 'testEventType',
-                    fire: function() {
-                        eventFired = true;
+                    {
+                        name: 'testEvent',
+                        type: 'testEventType',
+                        fire: function () {
+                            eventFired = true;
+                        }
                     }
-                }
-            ]),
+                ]),
                 testEvent = component.getEvent('testEvent');
 
             testEvent.fire();
@@ -154,22 +159,22 @@ describe('MockComponent', function () {
             assert.ok(eventFired);
         });
 
-        it('should be able to handle events fired and registered from the same component', function() {
+        it('should be able to handle events fired and registered from the same component', function () {
             var eventHandled = false,
                 component = MockComponent([], [], [
-                {
-                    name: 'testEvent',
-                    type: 'testEventType',
-                }
-            ], [
-                {
-                    name: 'testEvent',
-                    event: 'testEventType',
-                    action: function() {
-                        eventHandled = true;
+                    {
+                        name: 'testEvent',
+                        type: 'testEventType',
                     }
-                }
-            ]),
+                ], [
+                    {
+                        name: 'testEvent',
+                        event: 'testEventType',
+                        action: function () {
+                            eventHandled = true;
+                        }
+                    }
+                ]),
                 testEvent = component.getEvent('testEvent');
 
             testEvent.fire();
@@ -177,7 +182,7 @@ describe('MockComponent', function () {
             assert.ok(eventHandled);
         });
 
-        it('should be able to handle multiple event handlers on the same event', function() {
+        it('should be able to handle multiple event handlers on the same event', function () {
             var firstEventHandled = false,
                 secondEventHandled = false,
                 component = MockComponent([], [], [
@@ -189,14 +194,14 @@ describe('MockComponent', function () {
                     {
                         name: 'testEvent',
                         event: 'testEventType',
-                        action: function() {
+                        action: function () {
                             firstEventHandled = true;
                         }
                     },
                     {
                         name: 'testEvent',
                         event: 'testEventType',
-                        action: function() {
+                        action: function () {
                             secondEventHandled = true;
                         }
                     }
@@ -211,15 +216,15 @@ describe('MockComponent', function () {
     });
 });
 
-describe('Controller', function() {
-    describe('can use mock component', function() {
-        it('should be able to use component #get() without error', function() {
+describe('Controller', function () {
+    describe('can use mock component', function () {
+        it('should be able to use component #get() without error', function () {
             var component = MockComponent([
-                {
-                    name: 'testAttribute',
-                    value: 'testValue'
-                }
-            ]),
+                    {
+                        name: 'testAttribute',
+                        value: 'testValue'
+                    }
+                ]),
                 controller = TestController;
 
             controller.testGet(component);
@@ -227,13 +232,13 @@ describe('Controller', function() {
             assert.ok(true, 'did not throw error');
         });
 
-        it('should be able to use component #set() without error', function() {
+        it('should be able to use component #set() without error', function () {
             var component = MockComponent([
-                {
-                    name: 'testAttribute',
-                    value: 'testValue'
-                }
-            ]),
+                    {
+                        name: 'testAttribute',
+                        value: 'testValue'
+                    }
+                ]),
                 controller = TestController;
 
             controller.testSet(component);
@@ -241,12 +246,12 @@ describe('Controller', function() {
             assert.ok(true, 'did not throw error');
         });
 
-        it('should be able to use component #find() without error', function() {
+        it('should be able to use component #find() without error', function () {
             var component = MockComponent([], [
-                {
-                    name: 'testElement',
-                }
-            ]),
+                    {
+                        name: 'testElement',
+                    }
+                ]),
                 controller = TestController;
 
             controller.testFind(component);
@@ -255,14 +260,14 @@ describe('Controller', function() {
         });
     });
 
-    describe('can use helper', function() {
-        it('should be able to use helper testGet without error', function() {
+    describe('can use helper', function () {
+        it('should be able to use helper testGet without error', function () {
             var component = MockComponent([
-                {
-                    name: 'testAttribute',
-                    value: 'testValue'
-                }
-            ]),
+                    {
+                        name: 'testAttribute',
+                        value: 'testValue'
+                    }
+                ]),
                 controller = TestController,
                 helper = TestHelper;
 
@@ -272,8 +277,8 @@ describe('Controller', function() {
         });
     });
 
-    describe('can use $A', function() {
-        it('should be able to use $A.util.isUndefined without error', function() {
+    describe('can use $A', function () {
+        it('should be able to use $A.util.isUndefined without error', function () {
             var controller = TestController;
 
             controller.test$AisUndefined({});
@@ -283,15 +288,15 @@ describe('Controller', function() {
     });
 });
 
-describe('Helper', function() {
-    describe('can use mock component', function() {
-        it('should be able to use component #get() without error', function() {
+describe('Helper', function () {
+    describe('can use mock component', function () {
+        it('should be able to use component #get() without error', function () {
             var component = MockComponent([
-                {
-                    name: 'testAttribute',
-                    value: 'testValue'
-                }
-            ]),
+                    {
+                        name: 'testAttribute',
+                        value: 'testValue'
+                    }
+                ]),
                 helper = TestHelper;
 
             helper.testGet(component);
@@ -300,8 +305,8 @@ describe('Helper', function() {
         });
     });
 
-    describe('can use $A', function() {
-        it('should be able to use $A.util.isUndefined without error', function() {
+    describe('can use $A', function () {
+        it('should be able to use $A.util.isUndefined without error', function () {
             var helper = TestHelper;
 
             helper.test$AisUndefined({});
@@ -311,12 +316,12 @@ describe('Helper', function() {
     });
 });
 
-describe('$A', function() {
-    describe('#enqueueAction()', function() {
-        it('should invoke the action', function() {
+describe('$A', function () {
+    describe('#enqueueAction()', function () {
+        it('should invoke the action', function () {
             var $A = Mock$A(),
                 actionInvoked = false,
-                testAction = function() {
+                testAction = function () {
                     actionInvoked = true;
                 };
 
@@ -326,8 +331,8 @@ describe('$A', function() {
         });
     });
 
-    describe('#createComponent()', function() {
-        it('should invoke callback once finished', function() {
+    describe('#createComponent()', function () {
+        it('should invoke callback once finished', function () {
             var $A = Mock$A(),
                 callbackInvoked = false;
 
@@ -353,7 +358,7 @@ describe('$A', function() {
             assert.ok(result);
         });
 
-        it('should create a component with the specified ui attributes', function() {
+        it('should create a component with the specified ui attributes', function () {
             var $A = Mock$A(),
                 testComponent,
                 testElement;
@@ -371,33 +376,33 @@ describe('$A', function() {
         });
     });
 
-    describe('#createComponents()', function() {
-        it('should return components in the callback', function() {
+    describe('#createComponents()', function () {
+        it('should return components in the callback', function () {
             var $A = Mock$A(),
                 testComponents = [],
                 firstComponent = [],
                 secondComponent = [],
-                callback = function(components) {
+                callback = function (components) {
                     testComponents = components;
                 };
 
             $A.createComponents([firstComponent, secondComponent], callback);
 
-            var results = testComponents.filter(function(cmp) {
+            var results = testComponents.filter(function (cmp) {
                 return cmp instanceof MockComponent;
             });
 
-            for(var i = 0; i < results.length; i++) {
+            for (var i = 0; i < results.length; i++) {
                 assert.ok(results[i]);
             }
         });
 
-        it('should create components with the specified ui attributes', function() {
+        it('should create components with the specified ui attributes', function () {
             var $A = Mock$A(),
                 testComponents = [],
                 firstComponent = ['TestComponent', {'auraId': 'firstElement'}],
                 secondComponent = ['TestComponent', {'auraId': 'secondElement'}],
-                callback = function(components) {
+                callback = function (components) {
                     testComponents = components;
                 },
                 firstElement,
@@ -413,8 +418,8 @@ describe('$A', function() {
         });
     });
 
-    describe('#get()', function() {
-        it('should get an application event', function() {
+    describe('#get()', function () {
+        it('should get an application event', function () {
             var app = MockApp([
                     {
                         name: 'appEvent'
@@ -424,14 +429,14 @@ describe('$A', function() {
 
             var appEvent = $A.get('e.c:appEvent');
 
-			assert.deepEqual('appEvent', appEvent.name);
+            assert.deepEqual('appEvent', appEvent.name);
         });
     })
 });
 
-describe('$A.util', function() {
-    describe('#isUndefined()', function() {
-        it('should return true if object is undefined', function() {
+describe('$A.util', function () {
+    describe('#isUndefined()', function () {
+        it('should return true if object is undefined', function () {
             var $A = Mock$A(),
                 testObject,
                 result = $A.util.isUndefined(testObject);
@@ -439,7 +444,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return false if object is not undefined', function() {
+        it('should return false if object is not undefined', function () {
             var $A = Mock$A(),
                 testObject = {},
                 result = $A.util.isUndefined(testObject);
@@ -448,8 +453,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#isUndefinedOrNull()', function() {
-        it('should return true if undefined', function() {
+    describe('#isUndefinedOrNull()', function () {
+        it('should return true if undefined', function () {
             var $A = Mock$A(),
                 testObject,
                 result = $A.util.isUndefinedOrNull(testObject);
@@ -457,7 +462,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return false if object is not undefined', function() {
+        it('should return false if object is not undefined', function () {
             var $A = Mock$A(),
                 testObject = {},
                 result = $A.util.isUndefinedOrNull(testObject);
@@ -465,7 +470,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return true if object is null', function() {
+        it('should return true if object is null', function () {
             var $A = Mock$A(),
                 testObject = null,
                 result = $A.util.isUndefinedOrNull(testObject);
@@ -474,8 +479,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#addClass()', function() {
-        it('should add the specified css class to an element', function() {
+    describe('#addClass()', function () {
+        it('should add the specified css class to an element', function () {
             var component = MockComponent([], [
                     {
                         auraId: 'testElement',
@@ -493,8 +498,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#removeClass()', function() {
-        it('should remove the specified css class from an element', function() {
+    describe('#removeClass()', function () {
+        it('should remove the specified css class from an element', function () {
             var component = MockComponent([], [
                     {
                         auraId: 'testElement',
@@ -512,8 +517,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#hasClass()', function() {
-        it('should return true if the element has the css class', function() {
+    describe('#hasClass()', function () {
+        it('should return true if the element has the css class', function () {
             var component = MockComponent([], [
                     {
                         auraId: 'testElement',
@@ -528,7 +533,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return false if the element does not have the css class', function() {
+        it('should return false if the element does not have the css class', function () {
             var component = MockComponent([], [
                     {
                         auraId: 'testElement',
@@ -544,8 +549,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#toggleClass()', function() {
-        it('should remove the css class from the element if it has it', function() {
+    describe('#toggleClass()', function () {
+        it('should remove the css class from the element if it has it', function () {
             var component = MockComponent([], [
                     {
                         auraId: 'testElement',
@@ -562,7 +567,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should add the css class to the element if it does not have it', function() {
+        it('should add the css class to the element if it does not have it', function () {
             var component = MockComponent([], [
                     {
                         auraId: 'testElement',
@@ -580,8 +585,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#getBooleanValue()', function() {
-        it('should return false if value is falsy', function() {
+    describe('#getBooleanValue()', function () {
+        it('should return false if value is falsy', function () {
             var $A = Mock$A(),
                 testValue = "";
 
@@ -590,7 +595,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return true if value is truthy', function() {
+        it('should return true if value is truthy', function () {
             var $A = Mock$A(),
                 testValue = "test string";
 
@@ -600,8 +605,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#isArray()', function() {
-        it('should return false if value is not an array', function() {
+    describe('#isArray()', function () {
+        it('should return false if value is not an array', function () {
             var $A = Mock$A(),
                 testValue = "";
 
@@ -610,7 +615,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return true if value is an array', function() {
+        it('should return true if value is an array', function () {
             var $A = Mock$A(),
                 testValue = [];
 
@@ -620,8 +625,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#isEmpty()', function() {
-        it('should return false if value is not empty', function() {
+    describe('#isEmpty()', function () {
+        it('should return false if value is not empty', function () {
             var $A = Mock$A(),
                 testValue = "test";
 
@@ -630,7 +635,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return true if value is an empty array', function() {
+        it('should return true if value is an empty array', function () {
             var $A = Mock$A(),
                 testValue = [];
 
@@ -639,7 +644,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return true if value is undefined', function() {
+        it('should return true if value is undefined', function () {
             var $A = Mock$A(),
                 testValue = undefined;
 
@@ -648,7 +653,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return true if value is null', function() {
+        it('should return true if value is null', function () {
             var $A = Mock$A(),
                 testValue = null;
 
@@ -657,7 +662,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return false if value is a non-empty array', function() {
+        it('should return false if value is a non-empty array', function () {
             var $A = Mock$A(),
                 testValue = ['test'];
 
@@ -667,8 +672,8 @@ describe('$A.util', function() {
         });
     });
 
-    describe('#isObject()', function() {
-        it('should return false if value is falsy', function() {
+    describe('#isObject()', function () {
+        it('should return false if value is falsy', function () {
             var $A = Mock$A(),
                 testValue = null;
 
@@ -677,7 +682,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return true if value is an empty object', function() {
+        it('should return true if value is an empty object', function () {
             var $A = Mock$A(),
                 testValue = {};
 
@@ -686,7 +691,7 @@ describe('$A.util', function() {
             assert.ok(result);
         });
 
-        it('should return false if value is an array', function() {
+        it('should return false if value is an array', function () {
             var $A = Mock$A(),
                 testValue = [];
 
@@ -695,16 +700,17 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return false if value is a function', function() {
+        it('should return false if value is a function', function () {
             var $A = Mock$A(),
-                testValue = function() {};
+                testValue = function () {
+                };
 
             var result = $A.util.isObject(testValue);
 
             assert.deepEqual(false, result);
         });
 
-        it('should return false if value is a string', function() {
+        it('should return false if value is a string', function () {
             var $A = Mock$A(),
                 testValue = "test string";
 
@@ -713,7 +719,7 @@ describe('$A.util', function() {
             assert.deepEqual(false, result);
         });
 
-        it('should return false if value is a number', function() {
+        it('should return false if value is a number', function () {
             var $A = Mock$A(),
                 testValue = 8;
 
@@ -725,17 +731,17 @@ describe('$A.util', function() {
     });
 });
 
-describe('App', function() {
-    describe('events', function() {
-        it('should be able to register events and handle them using $A.get()', function() {
+describe('App', function () {
+    describe('events', function () {
+        it('should be able to register events and handle them using $A.get()', function () {
             var eventHandled = false;
             var app = MockApp([
-                {
-                    name: 'testEvent'
-                }],
+                    {
+                        name: 'testEvent'
+                    }],
                 [{
                     name: 'testEvent',
-                    action: function() {
+                    action: function () {
                         eventHandled = true;
                     }
                 }]),

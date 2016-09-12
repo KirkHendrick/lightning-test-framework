@@ -1,21 +1,21 @@
 /**
  * Created by khendrick on 9/12/16.
  */
-(function(exports) {
+(function (exports) {
 
     'use strict';
 
-    var MockApp = function(applicationEvents, eventHandlers) {
+    var MockApp = function (applicationEvents, eventHandlers) {
         return new MockApp.init(applicationEvents, eventHandlers);
     };
 
     MockApp.prototype = {
-        getEvents: function() {
+        getEvents: function () {
             return this.applicationEvents;
         }
     };
 
-    MockApp.init = function(applicationEvents, eventHandlers) {
+    MockApp.init = function (applicationEvents, eventHandlers) {
         this.applicationEvents = applicationEvents || [];
         this.eventHandlers = eventHandlers || [];
 
@@ -26,20 +26,20 @@
         var i, j, k, handler, applicationEvent,
             associatedHandlers = [];
 
-        for(i = 0; i < this.applicationEvents.length; i++) {
+        for (i = 0; i < this.applicationEvents.length; i++) {
             applicationEvent = this.applicationEvents[i];
 
-            for(j = 0; j < this.eventHandlers.length; j++) {
+            for (j = 0; j < this.eventHandlers.length; j++) {
                 handler = this.eventHandlers[j];
 
-                if(handler.name === applicationEvent.name) {
+                if (handler.name === applicationEvent.name) {
                     associatedHandlers.push(handler);
                 }
             }
 
-            if(associatedHandlers.length > 0) {
-                applicationEvent['fire'] = function() {
-                    for(k = 0; k < associatedHandlers.length; k++) {
+            if (associatedHandlers.length > 0) {
+                applicationEvent['fire'] = function () {
+                    for (k = 0; k < associatedHandlers.length; k++) {
                         associatedHandlers[k].action();
                     }
                 };

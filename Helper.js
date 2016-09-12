@@ -9,11 +9,11 @@ var TestHelper = (function TestHelper($A) {
 
     return {
 
-        testGet : function(component) {
+        testGet: function (component) {
             return component.get('v.testAttribute');
         },
 
-        test$AisUndefined : function(obj) {
+        test$AisUndefined: function (obj) {
             $A.util.isUndefined(obj);
         }
     };

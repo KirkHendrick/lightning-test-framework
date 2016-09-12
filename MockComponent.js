@@ -2,49 +2,49 @@
  * Created by khendrick on 9/3/16.
  */
 
-(function(exports) {
+(function (exports) {
 
     'use strict';
 
-    var MockComponent = function(attributes, elements, registeredEvents, eventHandlers, controller) {
+    var MockComponent = function (attributes, elements, registeredEvents, eventHandlers, controller) {
         return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
     };
 
     MockComponent.prototype = {
-        get: function(attributeName) {
-            if(attributeName[0] === 'c') {
-            	var method = this.getReference(attributeName);
-				method['setCallback'] = function(context, callback) {
-					method['callback'] = callback;
+        get: function (attributeName) {
+            if (attributeName[0] === 'c') {
+                var method = this.getReference(attributeName);
+                method['setCallback'] = function (context, callback) {
+                    method['callback'] = callback;
                 };
-				return method;
+                return method;
             }
 
-            var attribute = this.attributes.filter(function(obj) {
+            var attribute = this.attributes.filter(function (obj) {
                 return obj.name === attributeName.slice(2);
             })[0];
 
             return attribute;
         },
 
-        set: function(attributeName, newValue) {
-            var attribute = this.attributes.filter(function(obj) {
+        set: function (attributeName, newValue) {
+            var attribute = this.attributes.filter(function (obj) {
                 return obj.name === attributeName.slice(2);
             })[0];
 
             attribute.value = newValue;
         },
 
-        find: function(auraId) {
-            var element = this.elements.filter(function(obj) {
+        find: function (auraId) {
+            var element = this.elements.filter(function (obj) {
                 return obj.auraId === auraId;
             })[0];
 
             return element;
         },
 
-        getEvent: function(eventName) {
-            var event = this.registeredEvents.filter(function(obj) {
+        getEvent: function (eventName) {
+            var event = this.registeredEvents.filter(function (obj) {
                 return obj.name === eventName;
             })[0];
 
@@ -56,7 +56,7 @@
         }
     };
 
-    MockComponent.init = function(attributes, elements, registeredEvents, eventHandlers, controller) {
+    MockComponent.init = function (attributes, elements, registeredEvents, eventHandlers, controller) {
         this.attributes = attributes || [];
         this.elements = elements || [];
         this.registeredEvents = registeredEvents || [];
@@ -70,20 +70,20 @@
         var i, j, k, handler, registeredEvent,
             associatedHandlers = [];
 
-        for(i = 0; i < this.registeredEvents.length; i++) {
+        for (i = 0; i < this.registeredEvents.length; i++) {
             registeredEvent = this.registeredEvents[i];
 
-            for(j = 0; j < this.eventHandlers.length; j++) {
+            for (j = 0; j < this.eventHandlers.length; j++) {
                 handler = this.eventHandlers[j];
 
-                if(handler.name === registeredEvent.name) {
+                if (handler.name === registeredEvent.name) {
                     associatedHandlers.push(handler);
                 }
             }
 
-            if(associatedHandlers.length > 0) {
-                registeredEvent['fire'] = function() {
-                    for(k = 0; k < associatedHandlers.length; k++) {
+            if (associatedHandlers.length > 0) {
+                registeredEvent['fire'] = function () {
+                    for (k = 0; k < associatedHandlers.length; k++) {
                         associatedHandlers[k].action();
                     }
                 };
