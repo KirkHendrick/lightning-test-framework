@@ -3,6 +3,7 @@
  */
 
 var assert = require('assert'),
+    MockApp = require('./../MockApp').MockApp,
     MockComponent = require('./../MockComponent').MockComponent,
     TestController = require('./../Controller').Controller,
     TestHelper = require('./../Helper').Helper,
@@ -413,19 +414,19 @@ describe('$A', function() {
 
     describe('#get()', function() {
         it('should get an application event', function() {
-        	var $A = Mock$A;
+        	var $A = Mock$A,
+                app = MockApp([
+                    {
+                        name: 'appEvent'
+                    }
+                ]);
+
+            //TODO: remove this method
+            $A.setApp(app);
 
             var appEvent = $A.get('e.c:appEvent');
 
 			assert.deepEqual('appEvent', appEvent.name);
-        });
-
-        it('should be able to fire application event', function() {
-            var $A = Mock$A;
-
-            var appEvent = $A.get('e.c:appEvent');
-
-            assert.deepEqual('function', typeof appEvent.fire);
         });
     })
 });
@@ -728,18 +729,27 @@ describe('$A.util', function() {
 
 describe('App', function() {
     describe('events', function() {
-        //TODO: use $A.get('e.c:testEvent'), fire it and handle the result
+        it('should be able to register events and handle them using $A.get()', function() {
+            var eventHandled = false;
+            var app = MockApp([
+                {
+                    name: 'testEvent'
+                }],
+                [{
+                    name: 'testEvent',
+                    action: function() {
+                        eventHandled = true;
+                    }
+                }]),
+                $A = Mock$A;
 
-        // it('should be able to register events', function() {
-        //     var app = MockApp([
-        //         {
-        //             name: 'testEvent'
-        //         }
-        //     ]),
-        //         $A = Mock$A;
-		//
-		//
-        //     assert.ok(false);
-        // });
+            $A.setApp(app);
+
+            var testEvent = $A.get('e.c:testEvent');
+
+            testEvent.fire();
+
+            assert.ok(eventHandled);
+        });
     });
 });

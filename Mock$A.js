@@ -2,6 +2,7 @@
  * Created by khendrick on 9/9/16.
  */
 var MockComponent = require('./MockComponent').MockComponent;
+    //MockApp = require('./MockApp').MockApp;
 
 var Mock$A = (function Mock$A() {
 
@@ -86,10 +87,23 @@ var Mock$A = (function Mock$A() {
         },
 
         get: function(eventName) {
-        	return {
-        		name: eventName.slice(4),
-                fire : function(){}
+            if(this.app) {
+                var events = this.app.getEvents();
+
+                var event = events.filter(function(obj) {
+                    return obj.name === eventName.slice(4);
+                })[0];
+
+                return event;
             }
+            return {
+                name: eventName.slice(4),
+                fire : function() {}
+            }
+        },
+
+        setApp: function(app) {
+            this.app = app;
         }
     };
 
