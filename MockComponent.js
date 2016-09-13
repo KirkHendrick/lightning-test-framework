@@ -20,35 +20,26 @@
                 return method;
             }
 
-            var attribute = this.attributes.filter(function (obj) {
+            return this.attributes.find(function (obj) {
                 return obj.name === attributeName.slice(2);
-            })[0];
-
-            return attribute;
+            });
         },
 
         set: function (attributeName, newValue) {
-            var attribute = this.attributes.filter(function (obj) {
-                return obj.name === attributeName.slice(2);
-            })[0];
-
+            var attribute = this.get(attributeName);
             attribute.value = newValue;
         },
 
         find: function (auraId) {
-            var element = this.elements.filter(function (obj) {
+            return this.elements.find(function (obj) {
                 return obj.auraId === auraId;
-            })[0];
-
-            return element;
+            });
         },
 
         getEvent: function (eventName) {
-            var event = this.registeredEvents.filter(function (obj) {
+            return this.registeredEvents.find(function (obj) {
                 return obj.name === eventName;
-            })[0];
-
-            return event;
+            });
         },
 
         getReference: function (methodName) {
@@ -67,28 +58,19 @@
     };
 
     function associateEventHandlers() {
-        var i, j, k, handler, registeredEvent,
-            associatedHandlers = [];
-
-        for (i = 0; i < this.registeredEvents.length; i++) {
-            registeredEvent = this.registeredEvents[i];
-
-            for (j = 0; j < this.eventHandlers.length; j++) {
-                handler = this.eventHandlers[j];
-
-                if (handler.name === registeredEvent.name) {
-                    associatedHandlers.push(handler);
-                }
-            }
+        this.registeredEvents.forEach(function (registeredEvent) {
+            const associatedHandlers = this.eventHandlers.filter(function (handler) {
+                return handler.name === registeredEvent.name;
+            });
 
             if (associatedHandlers.length > 0) {
                 registeredEvent['fire'] = function () {
-                    for (k = 0; k < associatedHandlers.length; k++) {
-                        associatedHandlers[k].action();
-                    }
+                    associatedHandlers.forEach(function (handler) {
+                        handler.action();
+                    });
                 };
             }
-        }
+        }, this);
     }
 
     MockComponent.init.prototype = MockComponent.prototype;

@@ -81,24 +81,23 @@ var MockComponent = require('./MockComponent').MockComponent;
         },
 
         createComponents: function (components, callback) {
-            var createdComponents = [];
-            for (var i = 0; i < components.length; i++) {
-                this.createComponent(components[i][0], components[i][1], function (cmp) {
-                    createdComponents.push(cmp);
+            const createdComponents = components.map(function (component) {
+                var c;
+                this.createComponent(component[0], component[1], function (cmp) {
+                    c = cmp;
                 });
-            }
+                return c;
+            }, this);
             callback(createdComponents);
         },
 
         get: function (eventName) {
             if (this.app) {
-                var events = this.app.getEvents();
+                const events = this.app.getEvents();
 
-                var event = events.filter(function (obj) {
+                return events.find(function (obj) {
                     return obj.name === eventName.slice(4);
-                })[0];
-
-                return event;
+                });
             }
             return {
                 name: eventName.slice(4),

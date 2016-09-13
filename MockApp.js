@@ -23,28 +23,19 @@
     };
 
     function associateEventHandlers() {
-        var i, j, k, handler, applicationEvent,
-            associatedHandlers = [];
-
-        for (i = 0; i < this.applicationEvents.length; i++) {
-            applicationEvent = this.applicationEvents[i];
-
-            for (j = 0; j < this.eventHandlers.length; j++) {
-                handler = this.eventHandlers[j];
-
-                if (handler.name === applicationEvent.name) {
-                    associatedHandlers.push(handler);
-                }
-            }
+        this.applicationEvents.forEach(function (applicationEvent) {
+            const associatedHandlers = this.eventHandlers.filter(function (handler) {
+                return handler.name === applicationEvent.name;
+            });
 
             if (associatedHandlers.length > 0) {
                 applicationEvent['fire'] = function () {
-                    for (k = 0; k < associatedHandlers.length; k++) {
-                        associatedHandlers[k].action();
-                    }
+                    associatedHandlers.forEach(function (handler) {
+                        handler.action();
+                    });
                 };
             }
-        }
+        }, this);
     }
 
     MockApp.init.prototype = MockApp.prototype;

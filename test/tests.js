@@ -18,7 +18,6 @@ describe('MockComponent', function () {
         });
     });
 
-
     describe('#get()', function () {
         it('should retrieve the correct attribute', function () {
             var component = MockComponent([
@@ -164,7 +163,7 @@ describe('MockComponent', function () {
                 component = MockComponent([], [], [
                     {
                         name: 'testEvent',
-                        type: 'testEventType',
+                        type: 'testEventType'
                     }
                 ], [
                     {
@@ -392,9 +391,9 @@ describe('$A', function () {
                 return cmp instanceof MockComponent;
             });
 
-            for (var i = 0; i < results.length; i++) {
-                assert.ok(results[i]);
-            }
+            results.forEach(function (result) {
+                assert.ok(result);
+            });
         });
 
         it('should create components with the specified ui attributes', function () {
