@@ -63,13 +63,11 @@
                 return handler.name === registeredEvent.name;
             });
 
-            if (associatedHandlers.length > 0) {
-                registeredEvent['fire'] = function () {
-                    associatedHandlers.forEach(function (handler) {
-                        handler.action();
-                    });
-                };
-            }
+            registeredEvent['fire'] = function () {
+                associatedHandlers.forEach(function (handler) {
+                    handler.action();
+                });
+            };
         }, this);
     }
 

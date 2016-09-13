@@ -141,21 +141,15 @@ describe('MockComponent', function () {
 
     describe('events', function () {
         it('should be able to fire events', function () {
-            var eventFired = false,
-                component = MockComponent([], [], [
+            var component = MockComponent([], [], [
                     {
                         name: 'testEvent',
-                        type: 'testEventType',
-                        fire: function () {
-                            eventFired = true;
-                        }
+                        type: 'testEventType'
                     }
                 ]),
                 testEvent = component.getEvent('testEvent');
 
-            testEvent.fire();
-
-            assert.ok(eventFired);
+            assert.deepEqual('function', typeof testEvent.fire);
         });
 
         it('should be able to handle events fired and registered from the same component', function () {

@@ -28,13 +28,11 @@
                 return handler.name === applicationEvent.name;
             });
 
-            if (associatedHandlers.length > 0) {
-                applicationEvent['fire'] = function () {
-                    associatedHandlers.forEach(function (handler) {
-                        handler.action();
-                    });
-                };
-            }
+            applicationEvent['fire'] = function () {
+                associatedHandlers.forEach(function (handler) {
+                    handler.action();
+                });
+            };
         }, this);
     }
 
