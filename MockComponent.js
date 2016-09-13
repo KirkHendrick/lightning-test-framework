@@ -22,11 +22,13 @@
 
             return this.attributes.find(function (obj) {
                 return obj.name === attributeName.slice(2);
-            });
+            }).value;
         },
 
         set: function (attributeName, newValue) {
-            var attribute = this.get(attributeName);
+            var attribute = this.attributes.find(function (obj) {
+                return obj.name === attributeName.slice(2);
+            });
             attribute.value = newValue;
         },
 

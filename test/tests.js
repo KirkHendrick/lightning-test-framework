@@ -29,20 +29,7 @@ describe('MockComponent', function () {
 
             var testAttribute = component.get("v.testAttribute");
 
-            assert.deepEqual('testAttribute', testAttribute.name);
-        });
-
-        it('should retrieve the correct attribute value', function () {
-            var component = MockComponent([
-                {
-                    name: 'testAttribute',
-                    value: 'testValue'
-                }
-            ]);
-
-            var testAttribute = component.get("v.testAttribute");
-
-            assert.deepEqual('testValue', testAttribute.value);
+            assert.deepEqual('testValue', testAttribute);
         });
 
         it('should retrieve a controller method reference when specified with c.', function () {
@@ -90,7 +77,7 @@ describe('MockComponent', function () {
             component.set("v.testAttribute", newValue);
 
             var testAttribute = component.get("v.testAttribute");
-            assert.deepEqual(newValue, testAttribute.value);
+            assert.deepEqual(newValue, testAttribute);
         });
     });
 
@@ -507,6 +494,39 @@ describe('$A.util', function () {
             var result = ~element.cssClasses.indexOf('slds-test');
 
             assert.deepEqual(false, result);
+        });
+
+        it('should remove class when multiple classes are passed in', function () {
+            var component = MockComponent([], [
+                    {
+                        auraId: 'testElement',
+                        cssClasses: 'slds-test'
+                    }
+                ]),
+                $A = Mock$A(),
+                element = component.find('testElement');
+
+            $A.util.removeClass(element, 'slds-test slds-test2');
+
+            var result = ~element.cssClasses.indexOf('slds-test');
+
+            assert.deepEqual(false, result);
+        });
+
+        it('should remove multiple classes when multiple classes are passed in', function () {
+            var component = MockComponent([], [
+                    {
+                        auraId: 'testElement',
+                        cssClasses: 'slds-test slds-test2'
+                    }
+                ]),
+                $A = Mock$A(),
+                element = component.find('testElement');
+
+            $A.util.removeClass(element, 'slds-test slds-test2');
+
+            assert.deepEqual(false, ~element.cssClasses.indexOf('slds-test'));
+            assert.deepEqual(false, ~element.cssClasses.indexOf('slds-test2'));
         });
     });
 

@@ -26,8 +26,10 @@ var MockComponent = require('./MockComponent').MockComponent;
                 element.cssClasses = element.cssClasses.concat(cssClass);
             },
 
-            removeClass: function (element, cssClass) {
-                element.cssClasses = element.cssClasses.replace(cssClass, '');
+            removeClass: function (element, cssClasses) {
+                cssClasses.split(' ').forEach(function (cssClass) {
+                    element.cssClasses = element.cssClasses.replace(cssClass, '');
+                });
             },
 
             hasClass: function (element, cssClass) {
