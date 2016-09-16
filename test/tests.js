@@ -3,6 +3,7 @@
  */
 
 var assert = require('assert'),
+    fs = require('fs'),
     MockApp = require('./../MockApp').MockApp,
     MockComponent = require('./../MockComponent').MockComponent,
     TestController = require('./../Controller').Controller,
@@ -768,3 +769,24 @@ describe('App', function () {
         });
     });
 });
+
+// describe('Reading in Lightning files', function () {
+//     describe('', function () {
+//         it('should return the value in the lightning controller', function () {
+//             fs.readFile('lightning/TestController.js', function (err, data) {
+//                 if (err) throw err;
+//                 const input = data.toString();
+//
+//                 /*
+//                 var controllerString = input.substr(input.indexOf('{'))
+//                             .trim().slice(0, -1).replace(/(\r\n|\n|\r)/gm,"");
+//                             //.replace(/\t/g, '');
+//                 //console.log(eval(controllerString));
+//
+//                 console.log(controllerString);
+//                 //console.log('(' + controllerObject + ')');
+//                 */
+//             })
+//         });
+//     });
+// });
