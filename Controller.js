@@ -1,9 +1,8 @@
 /**
  * Created by khendrick on 8/24/16.
  */
-var Mock$A = require('./Mock$A').Mock$A;
-
-var TestController = (function TestController($A) {
+var Mock$A = require('./../Mock$A').Mock$A,
+Controller = (function ($A) {
 
     'use strict';
 
@@ -33,4 +32,4 @@ var TestController = (function TestController($A) {
 
 })(Mock$A());
 
-exports.Controller = TestController;
+exports.Controller = Controller;

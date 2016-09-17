@@ -1,9 +1,8 @@
 /**
  * Created by khendrick on 8/26/16.
  */
-var Mock$A = require('./Mock$A').Mock$A;
-
-var TestHelper = (function TestHelper($A) {
+var Mock$A = require('./../Mock$A').Mock$A,
+Helper = (function($A) {
 
     'use strict';
 
@@ -20,4 +19,4 @@ var TestHelper = (function TestHelper($A) {
 
 })(Mock$A());
 
-exports.Helper = TestHelper;
+exports.Helper = Helper;

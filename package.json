@@ -14,8 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-change": "^1.0.0",
     "gulp-mocha": "^3.0.1",
-    "gulp-replace": "^0.5.4",
     "gulp-watch": "^4.3.9",
     "mocha": "^3.0.2"
   },

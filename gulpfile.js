@@ -2,72 +2,70 @@
  * Created by khendrick on 9/9/16.
  */
 const gulp = require('gulp'),
-    mocha = require('gulp-mocha'),
-    watch = require('gulp-watch'),
-    change = require('gulp-change'),
-	replace = require('gulp-replace');
+	mocha = require('gulp-mocha'),
+	watch = require('gulp-watch'),
+	change = require('gulp-change'),
+	settings = require('./settings');
 
-gulp.task('monitorTests', function() {
+gulp.task('monitorTests', function () {
 	watchTests();
 	//watchLightning();
 });
 
-function watchLightning() {
-	const lightningFiles = './lightning-skeleton/*.js';
-	return watch(lightningFiles, function() {
-		gulp.src(lightningFiles, function () {
-			// is not running tasks
-			// problem might here
-			convertHelper();
-			convertController();
-		});
+gulp.task('test', function () {
+	return gulp.src('./test/tests.js', {read: false})
+		.pipe(mocha({reporter: 'nyan'}))
+		.pipe(gulp.dest('build'));
+});
+
+gulp.task('convert', function () {
+	settings.componentBundles.forEach(function(bundleName) {
+		console.log(bundleName);
+		convertController(bundleName);
+		convertHelper(bundleName);
 	});
-}
+});
 
 function watchTests() {
-	return watch(['./*.js', './**/*.js'], function() {
+	return watch(['./*.js', './**/*.js'], function () {
 		gulp.src('./test/tests.js', {read: false})
 			.pipe(mocha({reporter: 'nyan'}))
 			.pipe(gulp.dest('build'));
 	});
 }
 
-function parseController(content) {
-	const head = "var Mock$A = require('./../Mock$A').Mock$A; var Controller = (function ($A) { 'use strict'; return ";
+function parseLightning(content, type) {
+	return "var Mock$A = require('./../Mock$A').Mock$A," +
+		type +  " = (function($A) { " +
+		"'use strict'; " +
+		"return " +
 
-	const body = content.substr(content.indexOf('{'))
-				.trim().slice(0, -1).replace(/(\r\n|\n|\r)/gm,"");
+	content
+		.substr(content.indexOf('{'))
+		.trim()
+		.slice(0, -1)
+		.replace(/(\r\n|\n|\r)/gm, "") +
 
-	const foot = " })(Mock$A()); exports.Controller = Controller; ";
-
-	return head + body + foot;
+		" })(Mock$A()); " +
+		"exports." + type + " = " + type + "; ";
 }
 
+const parseHelper = function(content) {
+	return parseLightning(content, 'Helper');
+};
 
-function parseHelper(content) {
-	const head = "var Mock$A = require('./../Mock$A').Mock$A; var Helper = (function ($A) { 'use strict'; return ";
+const parseController = function(content) {
+	return parseLightning(content, 'Controller');
+};
 
-	const body = content.substr(content.indexOf('{'))
-		.trim().slice(0, -1).replace(/(\r\n|\n|\r)/gm,"");
-
-	const foot = " })(Mock$A()); exports.Helper = Helper; ";
-
-	return head + body + foot;
-}
-
-function convertController() {
-	return gulp.src('./lightning/*Controller.js')
+function convertController(bundleName) {
+	return gulp.src(settings.auraDirectory + bundleName + '/*Controller.js')
 		.pipe(change(parseController))
-		.pipe(gulp.dest('./build/'));
+		.pipe(gulp.dest(settings.buildTarget));
 }
 
-function convertHelper() {
-	return gulp.src('./lightning/*Helper.js')
+function convertHelper(bundleName) {
+	return gulp.src(settings.auraDirectory + bundleName + '/*Helper.js')
 		.pipe(change(parseHelper))
-		.pipe(gulp.dest('./build/'));
+		.pipe(gulp.dest(settings.buildTarget));
 }
-
-gulp.task('convertLightning', function() {
-	convertController();
-	convertHelper();
-});
