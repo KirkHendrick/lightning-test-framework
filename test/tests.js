@@ -2,12 +2,14 @@
  * Created by khendrick on 9/7/16.
  */
 
-var assert = require('assert'),
-	MockApp = require('./../MockApp').MockApp,
-	MockComponent = require('./../MockComponent').MockComponent,
-	Mock$A = require('./../Mock$A').Mock$A,
-	TestController = require('./../build/TestController').Controller,
-	TestHelper = require('./../build/TestHelper').Helper;
+const assert = require('assert'),
+	ltf = require('../index'),
+	TestController = require('../build/TestController').Controller,
+	TestHelper = require('../build/TestHelper').Helper;
+
+const MockApp = ltf.MockApp,
+	MockComponent = ltf.MockComponent,
+	Mock$A = ltf.Mock$A;
 
 describe('MockComponent', function () {
 	describe('#MockComponent()', function () {

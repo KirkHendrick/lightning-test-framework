@@ -1,10 +1,11 @@
 {
   "name": "lightning-test-framework",
   "version": "0.0.1",
-  "description": "Framework for unit testing Lighting Components javascript",
+  "description": "Framework for unit testing Lighting Components",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests.js --reporter nyan"
+    "test": "gulp test",
+    "convert": "gulp convert"
   },
   "repository": {
     "type": "git",

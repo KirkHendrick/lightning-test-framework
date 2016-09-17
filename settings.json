@@ -1,5 +1,5 @@
 {
-  "buildTarget": "./build",
+  "buildDirectory": "./build",
   "auraDirectory": "./",
   "componentBundles": ["TestComponent"]
 }

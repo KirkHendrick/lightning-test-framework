@@ -19,7 +19,7 @@ gulp.task('test', function () {
 });
 
 gulp.task('convert', function () {
-	settings.componentBundles.forEach(function(bundleName) {
+	settings.componentBundles.forEach(function (bundleName) {
 		console.log(bundleName);
 		convertController(bundleName);
 		convertHelper(bundleName);
@@ -36,36 +36,36 @@ function watchTests() {
 
 function parseLightning(content, type) {
 	return "var Mock$A = require('./../Mock$A').Mock$A," +
-		type +  " = (function($A) { " +
+		type + " = (function($A) { " +
 		"'use strict'; " +
 		"return " +
 
-	content
-		.substr(content.indexOf('{'))
-		.trim()
-		.slice(0, -1)
-		.replace(/(\r\n|\n|\r)/gm, "") +
+		content
+			.substr(content.indexOf('{'))
+			.trim()
+			.slice(0, -1)
+			.replace(/(\r\n|\n|\r)/gm, "") +
 
 		" })(Mock$A()); " +
 		"exports." + type + " = " + type + "; ";
 }
 
-const parseHelper = function(content) {
+const parseHelper = function (content) {
 	return parseLightning(content, 'Helper');
 };
 
-const parseController = function(content) {
+const parseController = function (content) {
 	return parseLightning(content, 'Controller');
 };
 
 function convertController(bundleName) {
 	return gulp.src(settings.auraDirectory + bundleName + '/*Controller.js')
 		.pipe(change(parseController))
-		.pipe(gulp.dest(settings.buildTarget));
+		.pipe(gulp.dest(settings.buildDirectory));
 }
 
 function convertHelper(bundleName) {
 	return gulp.src(settings.auraDirectory + bundleName + '/*Helper.js')
 		.pipe(change(parseHelper))
-		.pipe(gulp.dest(settings.buildTarget));
+		.pipe(gulp.dest(settings.buildDirectory));
 }
