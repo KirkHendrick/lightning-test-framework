@@ -1,5 +1,5 @@
 {
-  "buildDirectory": "./build",
-  "auraDirectory": "./",
+  "buildDirectory": "./build/",
+  "auraDirectory": "./aura/",
   "componentBundles": []
 }

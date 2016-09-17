@@ -14,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-change": "^1.0.0",
+    "gulp-change": "^1.0.0"
   },
   "bugs": {
     "url": "https://github.com/KirkHendrick/lightning-test-framework/issues"
