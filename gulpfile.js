@@ -1,38 +1,13 @@
-/**
- * Created by khendrick on 9/9/16.
- */
 const gulp = require('gulp'),
-	mocha = require('gulp-mocha'),
-	watch = require('gulp-watch'),
 	change = require('gulp-change'),
 	settings = require('./settings');
 
-gulp.task('monitorTests', function () {
-	watchTests();
-	//watchLightning();
-});
-
-gulp.task('test', function () {
-	return gulp.src('./test/tests.js', {read: false})
-		.pipe(mocha({reporter: 'nyan'}))
-		.pipe(gulp.dest('build'));
-});
-
 gulp.task('convert', function () {
 	settings.componentBundles.forEach(function (bundleName) {
-		console.log(bundleName);
 		convertController(bundleName);
 		convertHelper(bundleName);
 	});
 });
-
-function watchTests() {
-	return watch(['./*.js', './**/*.js'], function () {
-		gulp.src('./test/tests.js', {read: false})
-			.pipe(mocha({reporter: 'nyan'}))
-			.pipe(gulp.dest('build'));
-	});
-}
 
 function parseLightning(content, type) {
 	return "var Mock$A = require('./../Mock$A').Mock$A," +

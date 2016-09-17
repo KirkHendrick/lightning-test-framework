@@ -1,6 +1,3 @@
-/**
- * Created by khendrick on 9/9/16.
- */
 var MockComponent = require('./MockComponent').MockComponent;
 
 (function (exports) {

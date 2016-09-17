@@ -1,6 +1,3 @@
-/**
- * Created by kirkhendrick on 9/17/16.
- */
 const MockApp = require('./MockApp'),
 	MockComponent = require('./MockComponent'),
 	Mock$A = require('./Mock$A');

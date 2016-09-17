@@ -1,7 +1,3 @@
-/**
- * Created by khendrick on 9/3/16.
- */
-
 (function (exports) {
 
     'use strict';

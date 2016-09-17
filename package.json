@@ -1,10 +1,9 @@
 {
   "name": "lightning-test-framework",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Framework for unit testing Lighting Components",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test",
     "convert": "gulp convert"
   },
   "repository": {
@@ -16,9 +15,6 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-change": "^1.0.0",
-    "gulp-mocha": "^3.0.1",
-    "gulp-watch": "^4.3.9",
-    "mocha": "^3.0.2"
   },
   "bugs": {
     "url": "https://github.com/KirkHendrick/lightning-test-framework/issues"
