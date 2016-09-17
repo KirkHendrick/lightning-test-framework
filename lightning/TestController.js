@@ -20,5 +20,10 @@
 
     test$AisUndefined: function (obj) {
         $A.util.isUndefined(obj);
-    }
+    },
+
+    testScript: function () {
+    	return true;
+	}
 })
+

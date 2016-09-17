@@ -3,11 +3,10 @@
  */
 
 var assert = require('assert'),
-    fs = require('fs'),
     MockApp = require('./../MockApp').MockApp,
     MockComponent = require('./../MockComponent').MockComponent,
-    TestController = require('./../Controller').Controller,
-    TestHelper = require('./../Helper').Helper,
+    TestController = require('./../build/TestController').Controller,
+    TestHelper = require('./../build/TestHelper').Helper,
     Mock$A = require('./../Mock$A').Mock$A;
 
 describe('MockComponent', function () {
@@ -239,6 +238,12 @@ describe('Controller', function () {
 
             assert.ok(true, 'did not throw error');
         });
+
+        it('should be able to read script-made controller', function () {
+            const controller = TestController;
+
+			assert.ok(controller.testScript());
+        });
     });
 
     describe('can use helper', function () {
@@ -255,6 +260,12 @@ describe('Controller', function () {
             controller.testHelperGet(component, null, helper);
 
             assert.ok(true, 'did not throw error');
+        });
+
+        it('should be able to read script-made helper', function () {
+            const helper = TestHelper;
+
+            assert.ok(helper.testScript());
         });
     });
 
@@ -769,24 +780,3 @@ describe('App', function () {
         });
     });
 });
-
-// describe('Reading in Lightning files', function () {
-//     describe('', function () {
-//         it('should return the value in the lightning controller', function () {
-//             fs.readFile('lightning/TestController.js', function (err, data) {
-//                 if (err) throw err;
-//                 const input = data.toString();
-//
-//                 /*
-//                 var controllerString = input.substr(input.indexOf('{'))
-//                             .trim().slice(0, -1).replace(/(\r\n|\n|\r)/gm,"");
-//                             //.replace(/\t/g, '');
-//                 //console.log(eval(controllerString));
-//
-//                 console.log(controllerString);
-//                 //console.log('(' + controllerObject + ')');
-//                 */
-//             })
-//         });
-//     });
-// });
