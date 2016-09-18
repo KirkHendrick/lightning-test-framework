@@ -17,18 +17,27 @@
 			if (input[0] === 'c') {
 				return getControllerAction(input);
 			}
-			else if (input[0] === 'v') {
+			else if(input[0] === 'v') {
 				return getAttribute(input);
 			}
 
 			function getControllerAction(input) {
 				var action = self.getReference(input);
+
+				action.setParams = function (params) {
+					var paramArray = [];
+					for (var param in params) {
+						if (params.hasOwnProperty(param)) {
+							paramArray.push(params[param]);
+						}
+					}
+					action.params = paramArray;
+				};
+
 				action.setCallback = function (context, callback) {
 					action.callback = callback;
 				};
-				action.setParams = function (params) {
-					action.params = params;
-				};
+
 				return action;
 			}
 
@@ -91,4 +100,3 @@
 	exports.MockComponent = MockComponent;
 
 })(this);
-

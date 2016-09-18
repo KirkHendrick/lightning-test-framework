@@ -67,39 +67,33 @@ var MockComponent = require('./MockComponent').MockComponent;
 		},
 
 		enqueueAction: function (action) {
-			var params = [];
-			for (var param in action.params) {
-				if (action.params.hasOwnProperty(param)) {
-					params.push(action.params[param]);
-				}
-			}
-			const result = action.apply(this, params);
+			const result = action.apply(this, action.params);
 			if (action.callback) {
 				action.callback(generateResponse(result));
 			}
 
 			function generateResponse(result) {
-				if (result) {
-					return {
-						getState: function () {
-							return 'SUCCESS';
-						},
-						getReturnValue: function () {
-							return result;
-						}
+				const Response = function(state, result, error) {
+					this.getState = function() {
+						return state;
 					};
+
+					this.getReturnValue = function() {
+						return result;
+					};
+
+					this.getError = function() {
+						return [{
+							message: error
+						}];
+					};
+				};
+
+				if (result) {
+					return new Response('SUCCESS', result);
 				}
 				else {
-					return {
-						getState: function () {
-							return 'ERROR';
-						},
-						getError: function () {
-							return [{
-								message: 'There was no response.'
-							}];
-						}
-					};
+					return new Response('ERROR', result, 'There was no response.');
 				}
 			}
 		},
