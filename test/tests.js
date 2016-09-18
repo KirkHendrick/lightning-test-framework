@@ -57,7 +57,7 @@ describe('MockComponent', function () {
 				testMethod = component.get("c.testMethod");
 
 			testMethod.setCallback(this, function (response) {
-				testResponse = response;
+				testResponse = response.getReturnValue();
 			});
 
 			$A.enqueueAction(testMethod);
@@ -322,6 +322,63 @@ describe('$A', function () {
 			$A.enqueueAction(testAction);
 
 			assert.ok(actionInvoked);
+		});
+
+		it('should set the return value from response using getReturnValue', function () {
+			var $A = Mock$A(),
+				testResponse,
+				component = MockComponent([], [], [], [], {
+					testMethod: function () {
+						return 'testResponse'
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setCallback(this, function (response) {
+				testResponse = response.getReturnValue();
+			});
+
+			$A.enqueueAction(testMethod);
+
+			assert.deepEqual('testResponse', testResponse);
+		});
+
+		it('should set the return state to success if successful', function () {
+			var $A = Mock$A(),
+				testState,
+				component = MockComponent([], [], [], [], {
+					testMethod: function () {
+						return 'testResponse'
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setCallback(this, function (response) {
+				testState = response.getState();
+			});
+
+			$A.enqueueAction(testMethod);
+
+			assert.deepEqual('SUCCESS', testState);
+		});
+
+		it('should set the return state to error if not successful', function () {
+			var $A = Mock$A(),
+				testState,
+				component = MockComponent([], [], [], [], {
+					testMethod: function () {
+						return;
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setCallback(this, function (response) {
+				testState = response.getState();
+			});
+
+			$A.enqueueAction(testMethod);
+
+			assert.deepEqual('ERROR', testState);
 		});
 	});
 
