@@ -61,6 +61,53 @@ describe('MockComponent', function () {
 
 			assert.deepEqual('testResponse', testResponse);
 		});
+
+		it('should pass in arguments to action using setParams', function () {
+			var testResponse;
+			const $A = Mock$A(),
+				component = MockComponent([], [], [], [], {
+					testMethod: function (input) {
+						return input;
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setParams({input: 'testResponse'});
+
+			testMethod.setCallback(this, function (response) {
+				testResponse = response.getReturnValue();
+			});
+
+
+			$A.enqueueAction(testMethod);
+
+			assert.deepEqual('testResponse', testResponse);
+		});
+
+		it('should pass in multiple arguments to action using setParams', function () {
+			var testResponse;
+			const $A = Mock$A(),
+				component = MockComponent([], [], [], [], {
+					testMethod: function (input1, input2) {
+						return input1 + input2;
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setParams({
+				input1: 'test',
+				input2: 'Response'
+			});
+
+			testMethod.setCallback(this, function (response) {
+				testResponse = response.getReturnValue();
+			});
+
+
+			$A.enqueueAction(testMethod);
+
+			assert.deepEqual('testResponse', testResponse);
+		});
 	});
 
 	describe('#set()', function () {
@@ -122,74 +169,81 @@ describe('MockComponent', function () {
 			assert.ok(true, 'did not throw error');
 		});
 	});
+});
 
-	describe('events', function () {
-		it('should be able to fire events', function () {
-			const component = MockComponent([], [], [
-					{
-						name: 'testEvent',
-						type: 'testEventType'
+describe('Events', function () {
+	it('should be able to fire events', function () {
+		const component = MockComponent([], [], [
+				{
+					name: 'testEvent',
+					type: 'testEventType'
+				}
+			]),
+			testEvent = component.getEvent('testEvent');
+
+		assert.deepEqual('function', typeof testEvent.fire);
+	});
+
+	it('should not be able to fire events that have not been registered', function () {
+		const component = MockComponent(),
+			testEvent = component.getEvent('testEvent');
+
+		assert.deepEqual(null, testEvent);
+	});
+
+	it('should be able to handle events fired and registered from the same component', function () {
+		var eventHandled = false;
+		const component = MockComponent([], [], [
+				{
+					name: 'testEvent',
+					type: 'testEventType'
+				}
+			], [
+				{
+					name: 'testEvent',
+					event: 'testEventType',
+					action: function () {
+						eventHandled = true;
 					}
-				]),
-				testEvent = component.getEvent('testEvent');
+				}
+			]),
+			testEvent = component.getEvent('testEvent');
 
-			assert.deepEqual('function', typeof testEvent.fire);
-		});
+		testEvent.fire();
 
-		it('should be able to handle events fired and registered from the same component', function () {
-			var eventHandled = false;
-			const component = MockComponent([], [], [
-					{
-						name: 'testEvent',
-						type: 'testEventType'
+		assert.ok(eventHandled);
+	});
+
+	it('should be able to handle multiple event handlers on the same event', function () {
+		var firstEventHandled = false,
+			secondEventHandled = false;
+		const component = MockComponent([], [], [
+				{
+					name: 'testEvent',
+					type: 'testEventType'
+				}
+			], [
+				{
+					name: 'testEvent',
+					event: 'testEventType',
+					action: function () {
+						firstEventHandled = true;
 					}
-				], [
-					{
-						name: 'testEvent',
-						event: 'testEventType',
-						action: function () {
-							eventHandled = true;
-						}
+				},
+				{
+					name: 'testEvent',
+					event: 'testEventType',
+					action: function () {
+						secondEventHandled = true;
 					}
-				]),
-				testEvent = component.getEvent('testEvent');
+				}
+			]),
+			testEvent = component.getEvent('testEvent');
 
-			testEvent.fire();
+		testEvent.fire();
 
-			assert.ok(eventHandled);
-		});
-
-		it('should be able to handle multiple event handlers on the same event', function () {
-			var firstEventHandled = false,
-				secondEventHandled = false;
-			const component = MockComponent([], [], [
-					{
-						name: 'testEvent',
-						type: 'testEventType',
-					}
-				], [
-					{
-						name: 'testEvent',
-						event: 'testEventType',
-						action: function () {
-							firstEventHandled = true;
-						}
-					},
-					{
-						name: 'testEvent',
-						event: 'testEventType',
-						action: function () {
-							secondEventHandled = true;
-						}
-					}
-				]),
-				testEvent = component.getEvent('testEvent');
-
-			testEvent.fire();
-
-			assert.ok(firstEventHandled);
-			assert.ok(secondEventHandled);
-		});
+		assert.ok(firstEventHandled);
+		assert.ok(secondEventHandled);
 	});
 });
 
@@ -336,6 +390,44 @@ describe('$A', function () {
 			$A.enqueueAction(testMethod);
 
 			assert.deepEqual('testResponse', testResponse);
+		});
+
+		it('should set the error value from response using getError', function () {
+			var testErrors;
+			const $A = Mock$A(),
+				component = MockComponent([], [], [], [], {
+					testMethod: function () {
+						return;
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setCallback(this, function (response) {
+				testErrors = response.getError();
+			});
+
+			$A.enqueueAction(testMethod);
+
+			assert.ok(testErrors);
+		});
+
+		it('should set the error message if not successful', function () {
+			var testErrors;
+			const $A = Mock$A(),
+				component = MockComponent([], [], [], [], {
+					testMethod: function () {
+						return;
+					}
+				}),
+				testMethod = component.get("c.testMethod");
+
+			testMethod.setCallback(this, function (response) {
+				testErrors = response.getError();
+			});
+
+			$A.enqueueAction(testMethod);
+
+			assert.ok(testErrors[0].message);
 		});
 
 		it('should set the return state to success if successful', function () {
@@ -787,6 +879,21 @@ describe('App', function () {
 			testEvent.fire();
 
 			assert.ok(eventHandled);
+		});
+
+		it('should not be able to fire events that have not been registered', function () {
+			const app = MockApp(),
+				$A = Mock$A(app),
+				testEvent = $A.get('e.c:testEvent');
+
+			assert.deepEqual(null, testEvent);
+		});
+
+		it('should not be able to fire events if there is no app created', function () {
+			const $A = Mock$A(),
+				testEvent = $A.get('e.c:testEvent');
+
+			assert.deepEqual(null, testEvent);
 		});
 	});
 });

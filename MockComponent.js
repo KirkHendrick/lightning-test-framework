@@ -17,16 +17,19 @@
 			if (input[0] === 'c') {
 				return getControllerAction(input);
 			}
-			else if(input[0] === 'v') {
+			else if (input[0] === 'v') {
 				return getAttribute(input);
 			}
 
 			function getControllerAction(input) {
-				var method = self.getReference(input);
-				method.setCallback = function (context, callback) {
-					method.callback = callback;
+				var action = self.getReference(input);
+				action.setCallback = function (context, callback) {
+					action.callback = callback;
 				};
-				return method;
+				action.setParams = function (params) {
+					action.params = params;
+				};
+				return action;
 			}
 
 			function getAttribute(input) {
@@ -54,8 +57,8 @@
 			});
 		},
 
-		getReference: function (methodName) {
-			return this.controller[methodName.slice(2)];
+		getReference: function (actionName) {
+			return this.controller[actionName.slice(2)];
 		}
 	};
 

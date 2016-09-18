@@ -67,7 +67,13 @@ var MockComponent = require('./MockComponent').MockComponent;
 		},
 
 		enqueueAction: function (action) {
-			const result = action();
+			var params = [];
+			for (var param in action.params) {
+				if (action.params.hasOwnProperty(param)) {
+					params.push(action.params[param]);
+				}
+			}
+			const result = action.apply(this, params);
 			if (action.callback) {
 				action.callback(generateResponse(result));
 			}
@@ -87,6 +93,11 @@ var MockComponent = require('./MockComponent').MockComponent;
 					return {
 						getState: function () {
 							return 'ERROR';
+						},
+						getError: function () {
+							return [{
+								message: 'There was no response.'
+							}];
 						}
 					};
 				}
@@ -115,11 +126,6 @@ var MockComponent = require('./MockComponent').MockComponent;
 				return events.find(function (obj) {
 					return obj.name === eventName.slice(4);
 				});
-			}
-			return {
-				name: eventName.slice(4),
-				fire: function () {
-				}
 			}
 		}
 	};
