@@ -28,7 +28,7 @@
                 return handler.name === applicationEvent.name;
             });
 
-            applicationEvent['fire'] = function () {
+            applicationEvent.fire = function () {
                 associatedHandlers.forEach(function (handler) {
                     handler.action();
                 });

@@ -54,15 +54,11 @@ var MockComponent = require('./MockComponent').MockComponent;
 			},
 
 			isEmpty: function (value) {
-				if (!value || value.constructor === Array && value.length === 0) {
-					return true;
-				}
-				return false;
+				return (!value || Array.isArray(value) && value.length === 0);
 			},
 
 			isObject: function (value) {
-				if (value &&
-					value.constructor !== Array &&
+				if (value && !Array.isArray(value) &&
 					typeof value === 'object') {
 					return true;
 				}
@@ -72,27 +68,33 @@ var MockComponent = require('./MockComponent').MockComponent;
 
 		enqueueAction: function (action) {
 			const result = action();
-			var state = 'ERROR',
-				response = {
-					getState: function() {
-						return state;
-					}
-				};
-
-			if (result) {
-				state = 'SUCCESS';
-				response.getReturnValue = function () {
-					return result;
-				};
-			}
 			if (action.callback) {
-				action.callback(response);
+				action.callback(generateResponse(result));
+			}
+
+			function generateResponse(result) {
+				if (result) {
+					return {
+						getState: function () {
+							return 'SUCCESS';
+						},
+						getReturnValue: function () {
+							return result;
+						}
+					};
+				}
+				else {
+					return {
+						getState: function () {
+							return 'ERROR';
+						}
+					};
+				}
 			}
 		},
 
 		createComponent: function (type, elements, callback) {
-			var component = MockComponent([], [elements]);
-			callback(component);
+			callback(MockComponent([], [elements]));
 		},
 
 		createComponents: function (components, callback) {

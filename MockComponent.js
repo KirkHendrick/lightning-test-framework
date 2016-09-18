@@ -11,25 +11,35 @@
 	};
 
 	MockComponent.prototype = {
-		get: function (attributeName) {
-			if (attributeName[0] === 'c') {
-				var method = this.getReference(attributeName);
-				method['setCallback'] = function (context, callback) {
-					method['callback'] = callback;
+		get: function (input) {
+			const self = this;
+
+			if (input[0] === 'c') {
+				return getControllerAction(input);
+			}
+			else if(input[0] === 'v') {
+				return getAttribute(input);
+			}
+
+			function getControllerAction(input) {
+				var method = self.getReference(input);
+				method.setCallback = function (context, callback) {
+					method.callback = callback;
 				};
 				return method;
 			}
 
-			return this.attributes.find(function (obj) {
-				return obj.name === attributeName.slice(2);
-			}).value;
+			function getAttribute(input) {
+				return self.attributes.find(function (obj) {
+					return obj.name === input.slice(2);
+				}).value;
+			}
 		},
 
 		set: function (attributeName, newValue) {
-			var attribute = this.attributes.find(function (obj) {
+			this.attributes.find(function (obj) {
 				return obj.name === attributeName.slice(2);
-			});
-			attribute.value = newValue;
+			}).value = newValue;
 		},
 
 		find: function (auraId) {
@@ -65,7 +75,7 @@
 				return handler.name === registeredEvent.name;
 			});
 
-			registeredEvent['fire'] = function () {
+			registeredEvent.fire = function () {
 				associatedHandlers.forEach(function (handler) {
 					handler.action();
 				});
