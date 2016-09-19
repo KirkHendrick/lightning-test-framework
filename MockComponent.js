@@ -25,13 +25,12 @@
 				var action = self.getReference(input);
 
 				action.setParams = function (params) {
-					var paramArray = [];
-					for (var param in params) {
-						if (params.hasOwnProperty(param)) {
-							paramArray.push(params[param]);
-						}
-					}
-					action.params = paramArray;
+					action.params = Object.keys(params)
+						.map(function (param) {
+							if (params.hasOwnProperty(param)) {
+								return params[param];
+							}
+						});
 				};
 
 				action.setCallback = function (context, callback) {
