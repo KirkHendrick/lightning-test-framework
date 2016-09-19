@@ -10,18 +10,17 @@
 		if (attributes === undefined) {
 			return new MockComponent.init();
 		}
-		else if (Array.isArray(attributes)) {
-			return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
-		}
 		else {
-			const options = attributes;
-			var atts = options.attributes === undefined ? [] : options.attributes;
-			var elems = options.elements === undefined ? [] : options.elements;
-			var regEvents = options.registeredEvents === undefined ? [] : options.registeredEvents;
-			var handlers = options.eventHandlers === undefined ? [] : options.eventHandlers;
-			var cont = options.controller === undefined ? {} : options.controller;
+			if(!Array.isArray(attributes)) {
+				const options = attributes;
+				attributes = options.attributes || [];
+				elements = options.elements || [];
+				registeredEvents = options.registeredEvents || [];
+				eventHandlers = options.eventHandlers || [];
+				controller = options.controller || {};
+			}
 
-			return new MockComponent.init(atts, elems, regEvents, handlers, cont);
+			return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
 		}
 	};
 
