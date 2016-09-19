@@ -7,7 +7,22 @@
 	'use strict';
 
 	var MockComponent = function (attributes, elements, registeredEvents, eventHandlers, controller) {
-		return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
+		if (attributes === undefined) {
+			return new MockComponent.init();
+		}
+		else if (Array.isArray(attributes)) {
+			return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
+		}
+		else {
+			const options = attributes;
+			var atts = options.attributes === undefined ? [] : options.attributes;
+			var elems = options.elements === undefined ? [] : options.elements;
+			var regEvents = options.registeredEvents === undefined ? [] : options.registeredEvents;
+			var handlers = options.eventHandlers === undefined ? [] : options.eventHandlers;
+			var cont = options.controller === undefined ? {} : options.controller;
+
+			return new MockComponent.init(atts, elems, regEvents, handlers, cont);
+		}
 	};
 
 	MockComponent.prototype = {
@@ -17,7 +32,7 @@
 			if (input[0] === 'c') {
 				return getControllerAction(input);
 			}
-			else if(input[0] === 'v') {
+			else if (input[0] === 'v') {
 				return getAttribute(input);
 			}
 

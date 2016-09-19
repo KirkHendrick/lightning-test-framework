@@ -18,6 +18,26 @@ describe('MockComponent', function () {
 
 			assert.deepEqual('object', typeof component)
 		});
+
+		it('can create a MockComponent object using an object with default parameters', function () {
+			const component = MockComponent({
+					attributes: [{
+						name: 'testAttribute',
+						value: 'testValue'
+					}],
+					registeredEvents: [{
+						name: 'testEvent',
+						event: 'testEventType',
+						action: function () {
+						}
+					}]
+				}),
+				testAttribute = component.get('v.testAttribute'),
+				testEvent = component.getEvent('testEvent');
+
+			assert.deepEqual('testValue', testAttribute);
+			assert.deepEqual('function', typeof testEvent.fire);
+		});
 	});
 
 	describe('#get()', function () {
