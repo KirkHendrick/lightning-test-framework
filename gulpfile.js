@@ -44,6 +44,7 @@ function parseLightning(content, type) {
 			.substr(content.indexOf('{'))
 			.trim()
 			.slice(0, -1)
+			.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '')
 			.replace(/(\r\n|\n|\r)/gm, "") +
 
 		" })(Mock$A()); " +

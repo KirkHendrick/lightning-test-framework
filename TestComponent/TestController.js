@@ -3,10 +3,14 @@
  */
 ({
 	testGet: function (component) {
+		// test comment
 		var testAttribute = component.get('v.testAttribute');
 	},
 
 	testSet: function (component) {
+		/*
+		test block comment
+		 */
 		component.set('v.testAttribute', 'newValue');
 	},
 
