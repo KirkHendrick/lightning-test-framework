@@ -1,44 +1,51 @@
-/**
- * Created by khendrick on 9/12/16.
- */
 (function (exports) {
 
-    'use strict';
+	'use strict';
 
-    var MockApp = function (applicationEvents, eventHandlers) {
-        return new MockApp.init(applicationEvents, eventHandlers);
-    };
+	var MockApp = function (applicationEvents, component) {
+		return new MockApp.init(applicationEvents, component);
+	};
 
-    MockApp.prototype = {
-        getEvents: function () {
-            return this.applicationEvents;
-        }
-    };
+	MockApp.prototype = {
+		getEvents: function () {
+			return this.applicationEvents;
+		}
+	};
 
-    MockApp.init = function (applicationEvents, eventHandlers) {
-        this.applicationEvents = applicationEvents || [];
-        this.eventHandlers = eventHandlers || [];
+	MockApp.init = function (applicationEvents, component) {
+		this.applicationEvents = applicationEvents || [];
+		this.component = component || [];
 
-        associateEventHandlers.call(this);
-    };
+		associateEventHandlers.call(this);
+	};
 
-    function associateEventHandlers() {
-        this.applicationEvents.forEach(function (applicationEvent) {
-            const associatedHandlers = this.eventHandlers.filter(function (handler) {
-                return handler.name === applicationEvent.name;
-            });
+	function associateEventHandlers() {
+		const self = this;
+		self.applicationEvents.forEach(function (applicationEvent) {
+			const associatedHandlers = self.component.eventHandlers.filter(function (handler) {
+				return handler.name === applicationEvent.name;
+			});
 
-            applicationEvent.fire = function () {
-                associatedHandlers.forEach(function (handler) {
-                    handler.action();
-                });
-            };
-        }, this);
-    }
+			applicationEvent.setParams = function (params) {
+				applicationEvent.params = params;
+				return applicationEvent;
+			};
 
-    MockApp.init.prototype = MockApp.prototype;
+			applicationEvent.fire = function () {
+				associatedHandlers.forEach(function (handler) {
+					self.component.controller[handler.action.slice(2)](self.component, {
+						getParam: function (param) {
+							return applicationEvent.params[param];
+						}
+					});
+				});
+			};
+		});
+	}
 
-    exports.MockApp = MockApp;
+	MockApp.init.prototype = MockApp.prototype;
+
+	exports.MockApp = MockApp;
 
 })(this);
 

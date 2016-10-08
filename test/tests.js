@@ -1,7 +1,3 @@
-/**
- * Created by khendrick on 9/7/16.
- */
-
 const assert = require('assert'),
 	ltf = require('../index'),
 	TestController = require('../build/TestController').Controller,
@@ -267,21 +263,21 @@ describe('Events', function () {
 
 	it('should be able to pass parameters into events', function () {
 		const component = MockComponent({
-				attributes: [{
-					name: 'testParam',
-					value: false
-				}],
-				registeredEvents: [{
-					name: 'testEvent',
-					type: 'testEventType'
-				}],
-				eventHandlers: [{
-					name: 'testEvent',
-					event: 'testEventType',
-					action: 'c.testEventParams'
-				}],
-				controller: TestController
-			});
+			attributes: [{
+				name: 'testParam',
+				value: false
+			}],
+			registeredEvents: [{
+				name: 'testEvent',
+				type: 'testEventType'
+			}],
+			eventHandlers: [{
+				name: 'testEvent',
+				event: 'testEventType',
+				action: 'c.testEventParams'
+			}],
+			controller: TestController
+		});
 
 		component
 			.getEvent('testEvent')
@@ -609,7 +605,7 @@ describe('$A', function () {
 					{
 						name: 'appEvent'
 					}
-				]),
+				], MockComponent()),
 				$A = Mock$A(app),
 				appEvent = $A.get('e.c:appEvent');
 
@@ -909,23 +905,21 @@ describe('$A.util', function () {
 describe('App', function () {
 	describe('events', function () {
 		it('should be able to register events and handle them using $A.get()', function () {
-			var eventHandled = false;
-			const app = MockApp([
-					{
-						name: 'testEvent'
+			const component = MockComponent({
+					attributes: [{name: 'eventHandled', value: false}],
+					eventHandlers: [{
+						name: 'testEvent',
+						action: 'c.testEventHandled'
 					}],
-				[{
-					name: 'testEvent',
-					action: function () {
-						eventHandled = true;
-					}
-				}]),
+					controller: TestController
+				}),
+				app = MockApp([{name: 'testEvent'}], component),
 				$A = Mock$A(app),
 				testEvent = $A.get('e.c:testEvent');
 
 			testEvent.fire();
 
-			assert.ok(eventHandled);
+			assert.ok(component.get('v.eventHandled'));
 		});
 
 		it('should not be able to fire events that have not been registered', function () {
@@ -941,6 +935,32 @@ describe('App', function () {
 				testEvent = $A.get('e.c:testEvent');
 
 			assert.deepEqual(null, testEvent);
+		});
+
+		it('should be able to pass parameters into events', function () {
+			const component = MockComponent({
+					attributes: [{
+						name: 'testParam',
+						value: false
+					}],
+					eventHandlers: [{
+						name: 'testEvent',
+						event: 'testEventType',
+						action: 'c.testEventParams'
+					}],
+					controller: TestController
+				}),
+				app = MockApp([{name: 'testEvent'}], component),
+				$A = Mock$A(app),
+				testEvent = $A.get('e.c:testEvent');
+
+			testEvent
+				.setParams({
+					testParam: true
+				})
+				.fire();
+
+			assert.ok(component.get('v.testParam'));
 		});
 	});
 });

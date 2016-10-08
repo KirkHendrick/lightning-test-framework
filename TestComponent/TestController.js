@@ -1,6 +1,3 @@
-/**
- * Created by khendrick on 9/14/16.
- */
 ({
 	testGet: function (component) {
 		// test comment
@@ -24,10 +21,6 @@
 
 	test$AisUndefined: function (obj) {
 		$A.util.isUndefined(obj);
-	},
-
-	testScript: function () {
-		return true;
 	},
 
 	testEventHandled: function (component) {
