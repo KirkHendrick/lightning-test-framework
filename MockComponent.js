@@ -1,26 +1,23 @@
-/**
- * Created by khendrick on 9/3/16.
- */
-
 (function (exports) {
 
 	'use strict';
 
-	var MockComponent = function (attributes, elements, registeredEvents, eventHandlers, controller) {
+	var MockComponent = function (attributes, elements, registeredEvents, eventHandlers, apexController, controller) {
 		if (attributes === undefined) {
 			return new MockComponent.init();
 		}
 		else {
-			if(!Array.isArray(attributes)) {
+			if (!Array.isArray(attributes)) {
 				const options = attributes;
 				attributes = options.attributes || [];
 				elements = options.elements || [];
 				registeredEvents = options.registeredEvents || [];
 				eventHandlers = options.eventHandlers || [];
+				apexController = options.apexController || {};
 				controller = options.controller || {};
 			}
 
-			return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, controller);
+			return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, apexController, controller);
 		}
 	};
 
@@ -80,32 +77,43 @@
 		},
 
 		getReference: function (actionName) {
-			return this.controller[actionName.slice(2)];
+			return this.apexController[actionName.slice(2)];
 		}
 	};
 
-	MockComponent.init = function (attributes, elements, registeredEvents, eventHandlers, controller) {
+	MockComponent.init = function (attributes, elements, registeredEvents, eventHandlers, apexController, controller) {
 		this.attributes = attributes || [];
 		this.elements = elements || [];
 		this.registeredEvents = registeredEvents || [];
 		this.eventHandlers = eventHandlers || [];
+		this.apexController = apexController || {};
 		this.controller = controller || {};
 
 		associateEventHandlers.call(this);
 	};
 
 	function associateEventHandlers() {
-		this.registeredEvents.forEach(function (registeredEvent) {
-			const associatedHandlers = this.eventHandlers.filter(function (handler) {
+		const self = this;
+		self.registeredEvents.forEach(function (registeredEvent) {
+			const associatedHandlers = self.eventHandlers.filter(function (handler) {
 				return handler.name === registeredEvent.name;
 			});
 
+			registeredEvent.setParams = function (params) {
+				registeredEvent.params = params;
+				return registeredEvent;
+			};
+
 			registeredEvent.fire = function () {
 				associatedHandlers.forEach(function (handler) {
-					handler.action();
+					self.controller[handler.action.slice(2)](self, {
+						getParam: function (param) {
+							return registeredEvent.params[param];
+						}
+					});
 				});
 			};
-		}, this);
+		});
 	}
 
 	MockComponent.init.prototype = MockComponent.prototype;

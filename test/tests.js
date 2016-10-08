@@ -53,9 +53,11 @@ describe('MockComponent', function () {
 			assert.deepEqual('testValue', testAttribute);
 		});
 
-		it('should retrieve a controller method reference when specified with c.', function () {
-			const component = MockComponent([], [], [], [], {
-					testMethod: function () {
+		it('should retrieve an apex controller method reference when specified with c.', function () {
+			const component = MockComponent({
+					apexController: {
+						testMethod: function () {
+						}
 					}
 				}),
 				testMethod = component.get("c.testMethod");
@@ -212,58 +214,83 @@ describe('Events', function () {
 	});
 
 	it('should be able to handle events fired and registered from the same component', function () {
-		var eventHandled = false;
-		const component = MockComponent([], [], [
-				{
+		const component = MockComponent({
+				attributes: [{
+					name: 'eventHandled', value: false
+				}],
+				registeredEvents: [{
 					name: 'testEvent',
 					type: 'testEventType'
-				}
-			], [
-				{
+				}],
+				eventHandlers: [{
 					name: 'testEvent',
 					event: 'testEventType',
-					action: function () {
-						eventHandled = true;
-					}
-				}
-			]),
+					action: 'c.testEventHandled'
+				}],
+				controller: TestController
+			}),
 			testEvent = component.getEvent('testEvent');
 
 		testEvent.fire();
 
-		assert.ok(eventHandled);
+		assert.ok(component.get('v.eventHandled'));
 	});
 
 	it('should be able to handle multiple event handlers on the same event', function () {
-		var firstEventHandled = false,
-			secondEventHandled = false;
-		const component = MockComponent([], [], [
-				{
-					name: 'testEvent',
-					type: 'testEventType'
-				}
-			], [
-				{
-					name: 'testEvent',
-					event: 'testEventType',
-					action: function () {
-						firstEventHandled = true;
+		const component = MockComponent({
+				attributes: [
+					{name: 'eventHandled', value: false},
+					{name: 'secondEventHandled', value: false}
+				],
+				registeredEvents: [{name: 'testEvent', type: 'testEventType'}],
+				eventHandlers: [
+					{
+						name: 'testEvent',
+						event: 'testEventType',
+						action: 'c.testEventHandled'
+					},
+					{
+						name: 'testEvent',
+						event: 'testEventType',
+						action: 'c.testSecondEventHandled'
 					}
-				},
-				{
-					name: 'testEvent',
-					event: 'testEventType',
-					action: function () {
-						secondEventHandled = true;
-					}
-				}
-			]),
+				],
+				controller: TestController
+			}),
 			testEvent = component.getEvent('testEvent');
 
 		testEvent.fire();
 
-		assert.ok(firstEventHandled);
-		assert.ok(secondEventHandled);
+		assert.ok(component.get('v.eventHandled'));
+		assert.ok(component.get('v.secondEventHandled'));
+	});
+
+	it('should be able to pass parameters into events', function () {
+		const component = MockComponent({
+				attributes: [{
+					name: 'testParam',
+					value: false
+				}],
+				registeredEvents: [{
+					name: 'testEvent',
+					type: 'testEventType'
+				}],
+				eventHandlers: [{
+					name: 'testEvent',
+					event: 'testEventType',
+					action: 'c.testEventParams'
+				}],
+				controller: TestController
+			});
+
+		component
+			.getEvent('testEvent')
+			.setParams({
+				testParam: true
+			})
+			.fire();
+
+		assert.ok(component.get('v.testParam'));
 	});
 });
 

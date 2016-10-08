@@ -28,6 +28,18 @@
 
 	testScript: function () {
 		return true;
-	}
+	},
+
+	testEventHandled: function (component) {
+		component.set('v.eventHandled', true);
+	},
+
+	testSecondEventHandled: function (component) {
+		component.set('v.secondEventHandled', true);
+	},
+
+	testEventParams: function (component, event) {
+		component.set('v.testParam', event.getParam('testParam'));
+	},
 })
 
