@@ -13,5 +13,9 @@
 
 	testScript: function () {
 		return true;
+	},
+
+	setParam: function (component, param) {
+		component.set('v.testParam', param);
 	}
 })

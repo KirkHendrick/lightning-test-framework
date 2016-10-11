@@ -34,5 +34,9 @@
 	testEventParams: function (component, event) {
 		component.set('v.testParam', event.getParam('testParam'));
 	},
+
+	testEventParamsHelper: function (component, event, helper) {
+		helper.setParam(component, event.getParam('testParam'));
+	}
 })
 

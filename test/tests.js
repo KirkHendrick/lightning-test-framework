@@ -288,6 +288,35 @@ describe('Events', function () {
 
 		assert.ok(component.get('v.testParam'));
 	});
+
+	it('should pass the component helper into event handlers', function () {
+		const component = MockComponent({
+			attributes: [{
+				name: 'testParam',
+				value: false
+			}],
+			registeredEvents: [{
+				name: 'testEvent',
+				type: 'testEventType'
+			}],
+			eventHandlers: [{
+				name: 'testEvent',
+				event: 'testEventType',
+				action: 'c.testEventParamsHelper'
+			}],
+			controller: TestController,
+			helper: TestHelper
+		});
+
+		component
+			.getEvent('testEvent')
+			.setParams({
+				testParam: true
+			})
+			.fire();
+
+		assert.ok(component.get('v.testParam'));
+	});
 });
 
 describe('Controller', function () {
@@ -331,12 +360,6 @@ describe('Controller', function () {
 			controller.testFind(component);
 
 			assert.ok(true, 'did not throw error');
-		});
-
-		it('should be able to read script-made controller', function () {
-			const controller = TestController;
-
-			assert.ok(controller.testScript());
 		});
 	});
 
@@ -617,8 +640,8 @@ describe('$A', function () {
 describe('$A.util', function () {
 	describe('#isUndefined()', function () {
 		it('should return true if object is undefined', function () {
+            var testObject;
 			const $A = Mock$A(),
-				testObject,
 				result = $A.util.isUndefined(testObject);
 
 			assert.ok(result);
@@ -635,8 +658,8 @@ describe('$A.util', function () {
 
 	describe('#isUndefinedOrNull()', function () {
 		it('should return true if undefined', function () {
+			var testObject;
 			const $A = Mock$A(),
-				testObject,
 				result = $A.util.isUndefinedOrNull(testObject);
 
 			assert.ok(result);
