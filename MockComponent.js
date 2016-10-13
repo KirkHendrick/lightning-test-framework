@@ -36,18 +36,25 @@
             function getControllerAction(input) {
                 var action = self.getReference(input);
 
-                action.setParams = function (params) {
-                    action.params = Object.keys(params)
-                        .map(function (param) {
-                            if (params.hasOwnProperty(param)) {
-                                return params[param];
-                            }
-                        });
-                };
+                try {
+                    action.setParams = function (params) {
+                        action.params = Object.keys(params)
+                            .map(function (param) {
+                                if (params.hasOwnProperty(param)) {
+                                    return params[param];
+                                }
+                            });
+                    };
 
-                action.setCallback = function (context, callback) {
-                    action.callback = callback;
-                };
+                    action.setCallback = function (context, callback) {
+                        action.callback = callback;
+                    };
+                }
+                catch (e) {
+                   throw new ReferenceError(
+                        'action "' + input.slice(2) + '" is not defined'
+                   );
+                }
 
                 return action;
             }
@@ -59,7 +66,7 @@
                     }).value;
                 }
                 catch(e) {
-                    throw new ReferenceError('attribute ' + input.slice(2) + ' is not defined');
+                    throw new ReferenceError('attribute "' + input.slice(2) + '" is not defined');
                 }
             }
         },
@@ -77,7 +84,7 @@
 
             if(element === undefined) {
                 throw new ReferenceError(
-                    'element ' + auraId + ' is not defined'
+                    'element "' + auraId + '" is not defined'
                 );
             }
 
@@ -85,9 +92,17 @@
         },
 
         getEvent: function (eventName) {
-            return this.registeredEvents.find(function (obj) {
+            const event = this.registeredEvents.find(function (obj) {
                 return obj.name === eventName;
             });
+
+            if(event === undefined) {
+                throw new ReferenceError(
+                    'event "' + eventName + '" is not registered'
+                );
+            }
+
+            return event;
         },
 
         getReference: function (actionName) {
@@ -121,14 +136,21 @@
 
             registeredEvent.fire = function () {
                 associatedHandlers.forEach(function (handler) {
-                    self.controller[handler.action.slice(2)](self, {
-                            getParam: function (param) {
-                                return registeredEvent.params[param];
+					try {
+                        self.controller[handler.action.slice(2)](self, {
+                                getParam: function (param) {
+                                    return registeredEvent.params[param];
+                                },
+                                stopPropagation: function () {
+                                }
                             },
-                            stopPropagation: function () {
-                            }
-                        },
-                        self.helper);
+                            self.helper);
+					}
+					catch (e) {
+                        throw new ReferenceError(
+                            'controller method "' + handler.action.slice(2) + '" does not exist'
+                        );
+                    }
                 });
             };
         });

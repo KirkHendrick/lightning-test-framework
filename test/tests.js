@@ -203,10 +203,14 @@ describe('Events', function () {
 	});
 
 	it('should not be able to fire events that have not been registered', function () {
-		const component = MockComponent(),
-			testEvent = component.getEvent('testEvent');
+		const component = MockComponent();
 
-		assert.deepEqual(null, testEvent);
+		try {
+			component.getEvent('testEvent').fire();
+		}
+		catch (e) {
+			assert.deepEqual('event "testEvent" is not registered', e.message);
+		}
 	});
 
 	it('should be able to handle events fired and registered from the same component', function () {
@@ -1027,7 +1031,7 @@ describe('Error Handling', function () {
 			component.get('v.testAttribute');
 		}
 		catch (e) {
-			assert.deepEqual('attribute testAttribute is not defined', e.message);
+			assert.deepEqual('attribute "testAttribute" is not defined', e.message);
 		}
 	});
 
@@ -1040,7 +1044,53 @@ describe('Error Handling', function () {
 			component.find('testElement');
 		}
 		catch (e) {
-			assert.deepEqual('element testElement is not defined', e.message);
+			assert.deepEqual('element "testElement" is not defined', e.message);
+		}
+	});
+
+	it('should display which event is not registered', function () {
+		const component = MockComponent({
+			eventHandlers: [
+				{name: 'testEvent', action: 'c.testEventHandled'}
+			]
+		});
+
+		try {
+			component.getEvent('testEvent').fire();
+		}
+		catch(e) {
+			assert.deepEqual('event "testEvent" is not registered', e.message);
+		}
+	});
+
+	it('should display which apex controller method does not exist', function () {
+		const component = MockComponent({
+			apexController: { }
+		});
+
+		try {
+			component.get('c.testMethod');
+		}
+		catch (e) {
+			assert.deepEqual('action "testMethod" is not defined', e.message);
+		}
+	});
+
+	it('should display which controller event handler does not exist', function () {
+		const component = MockComponent({
+			registeredEvents: [
+				{name: 'testEvent'}
+			],
+			eventHandlers: [
+				{name: 'testEvent', action: 'c.testEventHandler'}
+			]
+		});
+
+		try {
+			component.getEvent('testEvent').fire();
+		}
+		catch (e) {
+			assert.deepEqual('controller method "testEventHandler" does not exist', e.message);
 		}
 	});
 });
