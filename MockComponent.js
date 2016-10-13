@@ -53,9 +53,14 @@
             }
 
             function getAttribute(input) {
-                return self.attributes.find(function (obj) {
-                    return obj.name === input.slice(2);
-                }).value;
+                try{
+                    return self.attributes.find(function (obj) {
+                        return obj.name === input.slice(2);
+                    }).value;
+                }
+                catch(e) {
+                    throw new ReferenceError('attribute ' + input.slice(2) + ' is not defined');
+                }
             }
         },
 
@@ -66,9 +71,17 @@
         },
 
         find: function (auraId) {
-            return this.elements.find(function (obj) {
+            const element = this.elements.find(function (obj) {
                 return obj.auraId === auraId;
             });
+
+            if(element === undefined) {
+                throw new ReferenceError(
+                    'element ' + auraId + ' is not defined'
+                );
+            }
+
+            return element;
         },
 
         getEvent: function (eventName) {

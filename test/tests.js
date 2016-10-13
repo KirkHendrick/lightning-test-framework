@@ -318,7 +318,7 @@ describe('Events', function () {
 		assert.ok(component.get('v.testParam'));
 	});
 
-    it('should be able to call event.stopPropagation()', function () {
+	it('should be able to call event.stopPropagation()', function () {
 		const component = MockComponent({
 			attributes: [{
 				name: 'testParam',
@@ -345,7 +345,7 @@ describe('Events', function () {
 			.fire();
 
 		assert.ok(component.get('v.testParam'));
-    });
+	});
 });
 
 describe('Controller', function () {
@@ -379,11 +379,11 @@ describe('Controller', function () {
 		});
 
 		it('should be able to use component #find() without error', function () {
-			const component = MockComponent([], [
-					{
-						name: 'testElement',
-					}
-				]),
+			const component = MockComponent({
+					elements: [
+						{ auraId: 'testElement' }
+					]
+				}),
 				controller = TestController;
 
 			controller.testFind(component);
@@ -669,7 +669,7 @@ describe('$A', function () {
 describe('$A.util', function () {
 	describe('#isUndefined()', function () {
 		it('should return true if object is undefined', function () {
-            var testObject;
+			var testObject;
 			const $A = Mock$A(),
 				result = $A.util.isUndefined(testObject);
 
@@ -1014,5 +1014,33 @@ describe('App', function () {
 
 			assert.ok(component.get('v.testParam'));
 		});
+	});
+});
+
+describe('Error Handling', function () {
+	it('should display which attribute is missing', function () {
+		const component = MockComponent({
+			attributes: []
+		});
+
+		try {
+			component.get('v.testAttribute');
+		}
+		catch (e) {
+			assert.deepEqual('attribute testAttribute is not defined', e.message);
+		}
+	});
+
+	it('should display which element is missing', function () {
+		const component = MockComponent({
+			elements: []
+		});
+
+		try {
+			component.find('testElement');
+		}
+		catch (e) {
+			assert.deepEqual('element testElement is not defined', e.message);
+		}
 	});
 });
