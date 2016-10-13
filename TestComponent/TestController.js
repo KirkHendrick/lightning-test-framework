@@ -37,6 +37,11 @@
 
 	testEventParamsHelper: function (component, event, helper) {
 		helper.setParam(component, event.getParam('testParam'));
+	},
+
+	testStopEventPropagation: function (component, event, helper) {
+		helper.setParam(component, event.getParam('testParam'));
+        event.stopPropagation();
 	}
 })
 

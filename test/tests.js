@@ -317,6 +317,35 @@ describe('Events', function () {
 
 		assert.ok(component.get('v.testParam'));
 	});
+
+    it('should be able to call event.stopPropagation()', function () {
+		const component = MockComponent({
+			attributes: [{
+				name: 'testParam',
+				value: false
+			}],
+			registeredEvents: [{
+				name: 'testEvent',
+				type: 'testEventType'
+			}],
+			eventHandlers: [{
+				name: 'testEvent',
+				event: 'testEventType',
+				action: 'c.testStopEventPropagation'
+			}],
+			controller: TestController,
+			helper: TestHelper
+		});
+
+		component
+			.getEvent('testEvent')
+			.setParams({
+				testParam: true
+			})
+			.fire();
+
+		assert.ok(component.get('v.testParam'));
+    });
 });
 
 describe('Controller', function () {

@@ -111,6 +111,8 @@
                     self.controller[handler.action.slice(2)](self, {
                             getParam: function (param) {
                                 return registeredEvent.params[param];
+                            },
+                            stopPropagation: function () {
                             }
                         },
                         self.helper);
