@@ -20,7 +20,6 @@ gulp.task('test', function () {
 
 gulp.task('convert', function () {
 	settings.componentBundles.forEach(function (bundleName) {
-		console.log(bundleName);
 		convertController(bundleName);
 		convertHelper(bundleName);
 	});
@@ -35,7 +34,7 @@ function watchTests() {
 }
 
 function parseLightning(content, type) {
-	return "var Mock$A = require('./../Mock$A').Mock$A," +
+	return "var Mock$A = require('" + settings.ltfDirectory + "Mock$A').Mock$A," +
 		type + " = (function($A) { " +
 		"'use strict'; " +
 		"return " +
