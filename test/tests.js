@@ -187,6 +187,14 @@ describe('MockComponent', function () {
 			assert.ok(true, 'did not throw error');
 		});
 	});
+
+	describe('#isValid()', function () {
+		it('should return true', function () {
+			const component = MockComponent();
+
+            assert.ok(component.isValid());
+		});
+	});
 });
 
 describe('Events', function () {

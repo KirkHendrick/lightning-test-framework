@@ -107,6 +107,10 @@
 
         getReference: function (actionName) {
             return this.apexController[actionName.slice(2)];
+        },
+
+        isValid: function () {
+            return true;
         }
     };
 
