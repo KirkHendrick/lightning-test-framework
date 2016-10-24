@@ -19,11 +19,26 @@ gulp.task('test', function () {
 });
 
 gulp.task('convert', function () {
+	validateSettings();
 	settings.componentBundles.forEach(function (bundleName) {
 		convertController(bundleName);
 		convertHelper(bundleName);
 	});
 });
+
+function validateSettings() {
+    if(settings.ltfDirectory.slice(-1) === '/') {
+		settings.ltfDirectory = settings.ltfDirectory.slice(0, -1);
+	}
+
+	if(settings.buildDirectory.slice(-1) === '/') {
+		settings.buildDirectory = settings.buildDirectory.slice(0, -1);
+	}
+
+	if(settings.auraDirectory.slice(-1) === '/') {
+		settings.auraDirectory = settings.auraDirectory.slice(0, -1);
+	}
+}
 
 function watchTests() {
 	return watch(['./*.js', './**/*.js'], function () {
@@ -34,7 +49,7 @@ function watchTests() {
 }
 
 function parseLightning(content, type) {
-	return "var Mock$A = require('" + settings.ltfDirectory + "Mock$A').Mock$A," +
+	return "var Mock$A = require('" + settings.ltfDirectory + "/Mock$A').Mock$A," +
 		type + " = (function($A) { " +
 		"'use strict'; " +
 		"return " +
@@ -59,13 +74,13 @@ const parseController = function (content) {
 };
 
 function convertController(bundleName) {
-	return gulp.src(settings.auraDirectory + bundleName + '/*Controller.js')
+	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Controller.js')
 		.pipe(change(parseController))
 		.pipe(gulp.dest(settings.buildDirectory));
 }
 
 function convertHelper(bundleName) {
-	return gulp.src(settings.auraDirectory + bundleName + '/*Helper.js')
+	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Helper.js')
 		.pipe(change(parseHelper))
 		.pipe(gulp.dest(settings.buildDirectory));
 }
