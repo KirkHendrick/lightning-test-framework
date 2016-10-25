@@ -1,6 +1,3 @@
-/**
- * Created by khendrick on 9/9/16.
- */
 const gulp = require('gulp'),
 	mocha = require('gulp-mocha'),
 	watch = require('gulp-watch'),
@@ -23,6 +20,7 @@ gulp.task('convert', function () {
 	settings.componentBundles.forEach(function (bundleName) {
 		convertController(bundleName);
 		convertHelper(bundleName);
+		convertRenderer(bundleName);
 	});
 });
 
@@ -52,7 +50,7 @@ function parseLightning(content, type) {
 	return "var Mock$A = require('" + settings.ltfDirectory + "/Mock$A').Mock$A," +
 		type + " = (function($A) { " +
 		"'use strict'; " +
-		"return " +
+		"var publicApi = " +
 
 		content
 			.substr(content.indexOf('{'))
@@ -61,7 +59,8 @@ function parseLightning(content, type) {
 			.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '')
 			.replace(/(\r\n|\n|\r)/gm, "") +
 
-		" })(Mock$A()); " +
+		"; return publicApi; " +
+		"})(Mock$A()); " +
 		"exports." + type + " = " + type + "; ";
 }
 
@@ -73,6 +72,19 @@ const parseController = function (content) {
 	return parseLightning(content, 'Controller');
 };
 
+const parseRenderer = function (content) {
+	return parseLightning(content, 'Renderer');
+};
+
+const insertRenderingLifecycleMethods = function (content) {
+	return content.slice(0, -62) +
+		"publicApi.superAfterRender = function(){};" +
+		"publicApi.superRerender = function(){};" +
+		"publicApi.superUnrender = function(){};" +
+		"publicApi.superRender = function(){};" +
+		content.slice(-62);
+};
+
 function convertController(bundleName) {
 	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Controller.js')
 		.pipe(change(parseController))
@@ -82,5 +94,12 @@ function convertController(bundleName) {
 function convertHelper(bundleName) {
 	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Helper.js')
 		.pipe(change(parseHelper))
+		.pipe(gulp.dest(settings.buildDirectory));
+}
+
+function convertRenderer(bundleName) {
+	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Renderer.js')
+		.pipe(change(parseRenderer))
+		.pipe(change(insertRenderingLifecycleMethods))
 		.pipe(gulp.dest(settings.buildDirectory));
 }
