@@ -1,7 +1,7 @@
 Lightning Test Framework
 =====================
 
-This package allows you to unit test javascript in the Salesforce Lightning Components framework.
+#### Unit test Lightning Components Javascript, outside of Salesforce
 
 Setup
 --------
@@ -13,9 +13,9 @@ Setup
      5. 
  6. 
 
-Usage
+Examples
 --------
-```
+```javascript
 const assert = require('assert'),
       ltf = require('lightning-test-framework');
  
@@ -30,7 +30,7 @@ const foo = component.get('v.foo');
  
 assert.deepEqual('bar', foo);
 ```
-```
+```javascript
 const assert = require('assert'),
       ltf = require('lightning-test-framework');
  
@@ -48,7 +48,7 @@ const result = $A.util.hasClass(foo, 'slds-hide');
  
 assert.ok(result);
 ```
-```
+```javascript
 const assert = require('assert'),
       ltf = require('lightning-test-framework');
  
