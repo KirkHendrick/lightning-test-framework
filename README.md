@@ -1,7 +1,7 @@
 Lightning Test Framework
 =====================
 
-#### Unit test Lightning Components Javascript, outside of Salesforce
+### Unit test Lightning Components Javascript, outside of Salesforce
 
 Setup
 --------
