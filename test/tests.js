@@ -127,6 +127,36 @@ describe('MockComponent', function () {
 
             assert.deepEqual('testResponse', testResponse);
         });
+
+        it('should get the value of a property of an object using dot notation', function () {
+            const component = MockComponent([
+                    {
+                        name: 'testAttribute',
+                        value: {
+                            id: 'testValue'
+                        }
+                    }
+                ]),
+                testAttributeId = component.get("v.testAttribute.id");
+
+            assert.deepEqual('testValue', testAttributeId);
+        });
+
+        it('should get the value of a property of an object using dot notation if nested', function () {
+            const component = MockComponent([
+                    {
+                        name: 'testAttribute',
+                        value: {
+                            id: {
+                                number: 'testValue'
+                            }
+                        }
+                    }
+                ]),
+                testAttributeIdNumber = component.get("v.testAttribute.id.number");
+
+            assert.deepEqual('testValue', testAttributeIdNumber);
+        });
     });
 
     describe('#set()', function () {

@@ -61,13 +61,31 @@
 
             function getAttribute(input) {
                 try{
-                    return self.attributes.find(function (obj) {
-                        return obj.name === input.slice(2);
-                    }).value;
+                    let attributeName = input.slice(2), path, name, prop;
+
+                    if(attributeName.indexOf('.') !== -1) {
+                        path = attributeName.split('.');
+                        [name, prop] = attributeName.split('.');
+                    }
+
+                    let attribute = self.attributes.find(function (obj) {
+                        return obj.name === name || attributeName;
+                    });
+
+                    if(path) {
+                        return getFromPath(attribute.value, path.slice(1));
+                    }
+                    return attribute.value[prop] || attribute.value;
                 }
                 catch(e) {
                     throw new ReferenceError('attribute "' + input.slice(2) + '" is not defined');
                 }
+            }
+            function getFromPath(obj, path) {
+                if(obj[path[0]] === undefined) {
+                    return obj;
+                }
+                else return getFromPath(obj[path[0]], path.slice(1));
             }
         },
 
