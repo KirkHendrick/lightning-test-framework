@@ -51,41 +51,41 @@
                     };
                 }
                 catch (e) {
-                   throw new ReferenceError(
+                    throw new ReferenceError(
                         'action "' + input.slice(2) + '" is not defined'
-                   );
+                    );
                 }
 
                 return action;
             }
 
             function getAttribute(input) {
-                try{
-                    let attributeName = input.slice(2), path, name, prop;
+                try {
+                    let attributeName = input.slice(2),
+                        path = [attributeName];
 
-                    if(attributeName.indexOf('.') !== -1) {
+                    if (attributeName.indexOf('.') !== -1) {
                         path = attributeName.split('.');
-                        [name, prop] = attributeName.split('.');
                     }
 
                     let attribute = self.attributes.find(function (obj) {
-                        return obj.name === name || attributeName;
+                        return obj.name === path[0] || attributeName;
                     });
 
-                    if(path) {
-                        return getFromPath(attribute.value, path.slice(1));
-                    }
-                    return attribute.value[prop] || attribute.value;
+                    return getFromPath(attribute.value, path.slice(1));
                 }
-                catch(e) {
+                catch (e) {
                     throw new ReferenceError('attribute "' + input.slice(2) + '" is not defined');
                 }
             }
+
             function getFromPath(obj, path) {
-                if(obj[path[0]] === undefined) {
+                if (obj[path[0]] === undefined) {
                     return obj;
                 }
-                else return getFromPath(obj[path[0]], path.slice(1));
+                else {
+                    return getFromPath(obj[path[0]], path.slice(1));
+                }
             }
         },
 
@@ -100,7 +100,7 @@
                 return obj.auraId === auraId;
             });
 
-            if(element === undefined) {
+            if (element === undefined) {
                 throw new ReferenceError(
                     'element "' + auraId + '" is not defined'
                 );
@@ -114,7 +114,7 @@
                 return obj.name === eventName;
             });
 
-            if(event === undefined) {
+            if (event === undefined) {
                 throw new ReferenceError(
                     'event "' + eventName + '" is not registered'
                 );
@@ -158,7 +158,7 @@
 
             registeredEvent.fire = function () {
                 associatedHandlers.forEach(function (handler) {
-					try {
+                    try {
                         self.controller[handler.action.slice(2)](self, {
                                 getParam: function (param) {
                                     return registeredEvent.params[param];
@@ -167,8 +167,8 @@
                                 }
                             },
                             self.helper);
-					}
-					catch (e) {
+                    }
+                    catch (e) {
                         throw new ReferenceError(
                             'controller method "' + handler.action.slice(2) + '" does not exist'
                         );
