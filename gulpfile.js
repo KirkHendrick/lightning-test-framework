@@ -51,13 +51,14 @@ const parseController = function (content) {
 };
 
 function convertController(bundleName) {
-	return gulp.src(settings.auraDirectory + bundleName + '/*Controller.js')
+	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Controller.js')
 		.pipe(change(parseController))
 		.pipe(gulp.dest(settings.buildDirectory));
 }
 
 function convertHelper(bundleName) {
-	return gulp.src(settings.auraDirectory + bundleName + '/*Helper.js')
+	return gulp.src(settings.auraDirectory + '/' + bundleName + '/*Helper.js')
 		.pipe(change(parseHelper))
 		.pipe(gulp.dest(settings.buildDirectory));
 }
+
