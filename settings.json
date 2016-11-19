@@ -2,5 +2,5 @@
   "buildDirectory": "./build",
   "auraDirectory": "./",
   "ltfDirectory": "../",
-  "componentBundles": ["TestComponent"]
+  "componentBundles": ["TestComponent", "TestSuperComponent"]
 }

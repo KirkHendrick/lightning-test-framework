@@ -2,6 +2,7 @@ const assert = require('assert'),
     ltf = require('../index'),
     TestController = require('../build/TestController').Controller,
     TestHelper = require('../build/TestHelper').Helper,
+    TestSuperComponentHelper = require('../build/TestSuperComponentHelper').Helper,
     TestRenderer = require('../build/TestRenderer').Renderer;
 
 const MockApp = ltf.MockApp,
@@ -225,6 +226,27 @@ describe('MockComponent', function () {
 
             assert.ok(component.isValid());
         });
+    });
+});
+
+describe('Inheritance', function () {
+    it('should accept a list of components that it inherits from, and can reference helper methods and attributes', function () {
+        const component = MockComponent({
+                extendsFrom: [
+                    MockComponent({
+                        attributes: [
+                            {name: 'testSuperAttribute', value: true}
+                        ],
+                        helper: TestSuperComponentHelper
+                    })
+                ],
+                helper: TestHelper
+            }),
+            helper = TestHelper;
+
+        const result = helper.testSuper(component, helper);
+
+        assert.ok(result);
     });
 });
 

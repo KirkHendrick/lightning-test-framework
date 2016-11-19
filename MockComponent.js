@@ -2,7 +2,9 @@
 
     'use strict';
 
-    var MockComponent = function (attributes, elements, registeredEvents, eventHandlers, apexController, controller, helper) {
+    var MockComponent = function (attributes, elements, registeredEvents,
+                                  eventHandlers, apexController, controller,
+                                  helper, extendsFrom) {
         if (attributes === undefined) {
             return new MockComponent.init();
         }
@@ -16,9 +18,12 @@
                 apexController = options.apexController || {};
                 controller = options.controller || {};
                 helper = options.helper || {};
+                extendsFrom = options.extendsFrom || [];
             }
 
-            return new MockComponent.init(attributes, elements, registeredEvents, eventHandlers, apexController, controller, helper);
+            return new MockComponent.init(attributes, elements, registeredEvents,
+                eventHandlers, apexController, controller,
+                helper, extendsFrom);
         }
     };
 
@@ -132,7 +137,9 @@
         }
     };
 
-    MockComponent.init = function (attributes, elements, registeredEvents, eventHandlers, apexController, controller, helper) {
+    MockComponent.init = function (attributes, elements, registeredEvents,
+                                   eventHandlers, apexController,
+                                   controller, helper, extendsFrom) {
         this.attributes = attributes || [];
         this.elements = elements || [];
         this.registeredEvents = registeredEvents || [];
@@ -140,8 +147,11 @@
         this.apexController = apexController || {};
         this.controller = controller || {};
         this.helper = helper || {};
+        this.extendsFrom = extendsFrom || [];
 
         associateEventHandlers.call(this);
+
+        extendComponents.call(this);
     };
 
     function associateEventHandlers() {
@@ -175,6 +185,17 @@
                     }
                 });
             };
+        });
+    }
+
+    function extendComponents() {
+        const self = this;
+
+        self.extendsFrom.forEach(function (component) {
+            component.attributes.forEach(function (attribute) {
+                self.attributes.push(attribute);
+            });
+            Object.setPrototypeOf(self.helper, component.helper);
         });
     }
 

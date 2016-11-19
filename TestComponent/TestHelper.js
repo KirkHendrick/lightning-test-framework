@@ -17,5 +17,9 @@
 
 	setParam: function (component, param) {
 		component.set('v.testParam', param);
+	},
+
+	testSuper: function (component, helper) {
+		return helper.testGetSuper(component);
 	}
 })
