@@ -1,72 +1,79 @@
 Lightning Test Framework
 =====================
 
-### Unit test Lightning Components Javascript, outside of Salesforce
+The Lightning Test Framework (LTF) provides the ability to unit test Lightning Components, outside of the browser and the Salesforce environment.
 
-Setup
---------
+A template to get started using it can be found [here.](https://github.com/KirkHendrick/ltf-example)
 
- 1. Clone this repository.
- 2. Create a new npm project.
-     3. 
-     4. 
-     5. 
- 6. 
+## Examples
+### Mock Components
 
-Examples
---------
+The LTF provides utility functions to create a mock version of the component under test.
+
+We can then use component methods just as we do within the Aura framework.
+
 ```javascript
-const assert = require('assert'),
-      ltf = require('lightning-test-framework');
- 
-const component = ltf.MockComponent({
-    attributes: [{
-         name: 'foo',
-         value: 'bar'
-    }]
+const component = MockComponent({
+    attributes: [
+        {
+            name: 'foo',
+            value: 'bar'
+        }
+    ]
 });
  
-const foo = component.get('v.foo');
+let foo = component.get('v.foo');
  
-assert.deepEqual('bar', foo);
+foo;    // bar
+ 
+component.set('v.foo', 'baz');
+ 
+foo = component.get('v.foo');
+ 
+foo;    // baz
 ```
-```javascript
-const assert = require('assert'),
-      ltf = require('lightning-test-framework');
- 
-const component = ltf.MockComponent({
-    elements: [{
-         auraId: 'foo',
-         cssClasses: 'slds-hide'
-    }]
-});
-const $A = ltf.Mock$A();
- 
-const foo = component.find('foo');
- 
-const result = $A.util.hasClass(foo, 'slds-hide');
- 
-assert.ok(result);
-```
-```javascript
-const assert = require('assert'),
-      ltf = require('lightning-test-framework');
- 
-const component = ltf.MockComponent({
-    registeredEvents: [{
-         name: 'testEvent'
-    }],
-    eventHandlers: [{
-         name: 'testEvent',
-         action: 'c.testEventHandled' 
-    }]
-});
- 
-const testEvent = component.getEvent('testEvent');
 
-testEvent.fire();
+Using these we can unit test components using any NodeJS-based Javascript testing suite.
+
+```javascript
+// Mocha
+const assert = require('assert'),
+    TestComponentHelper = require('build/TestComponentHelper').Helper;
  
+describe('TestComponent', function () {
+    describe('Helper', function () {
+        describe('#foo()', function () {
+            it('should set the "foo" attribute to "bar"', function () {
+                const helper = TestComponentHelper,
+                    component = MockComponent({
+                        attributes: [
+                            {
+                                name: 'foo' 
+                            }
+                        ] 
+                    });
+                    
+                helper.foo(component, helper);
+                
+                assert.deepEqual('bar', component.get('v.foo'));
+            });
+        });
+    });
+});
+
 ```
+[See the test spec for more examples](https://github.com/KirkHendrick/lightning-test-framework/blob/dev/test/tests.js)
+
+## Setup
+
+ 1. Initialize a new npm project.
+ 2. Clone this repository within it.
+ 3. Set up your testing suite.
+ 4. Configure settings using settings.json:
+     5. Specify the location of your aura directory.
+     6. Specify which components you wish to test.
+ 7. Run "gulp convert" to build the Javascript files.
+ 8. Reference these files within your tests.
 
 Related Resources
 --------
