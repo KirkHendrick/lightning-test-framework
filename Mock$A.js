@@ -63,6 +63,10 @@ var MockComponent = require('./MockComponent').MockComponent;
 			}
 		},
 
+		getCallback: function (fn) {
+			fn();
+		},
+
 		enqueueAction: function (action) {
 			const result = action.apply(this, action.params);
 			if (action.callback) {

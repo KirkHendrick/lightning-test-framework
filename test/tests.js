@@ -791,6 +791,20 @@ describe('$A', function () {
             assert.deepEqual('appEvent', appEvent.name);
         });
     });
+
+    describe('#getCallback()', function () {
+        it('should execute the given function', function () {
+            var testFlag = false;
+            const $A = Mock$A(),
+                callback = function () {
+                    testFlag = true;
+                };
+
+            $A.getCallback(callback);
+
+            assert.ok(testFlag);
+        });
+    });
 });
 
 describe('$A.util', function () {
