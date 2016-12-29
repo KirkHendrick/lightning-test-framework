@@ -33,7 +33,7 @@ foo = component.get('v.foo');
 foo;    // baz
 ```
 
-Using these we can unit test components using any NodeJS-based Javascript testing suite.
+We can use this to unit test components using any NodeJS-based Javascript testing suite.
 
 ```javascript
 // Mocha
@@ -62,7 +62,7 @@ describe('TestComponent', function () {
 });
 
 ```
-[See the test spec for more examples](https://github.com/KirkHendrick/lightning-test-framework/blob/dev/test/tests.js)
+[See the test spec for more examples](https://github.com/KirkHendrick/lightning-test-framework/blob/dev/spec.md)
 
 ## Setup
 
@@ -78,4 +78,6 @@ describe('TestComponent', function () {
 Related Resources
 --------
 [Lightning Components Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/components_overview.htm)
+
+[Mocha Documentation](https://mochajs.org/)
 
