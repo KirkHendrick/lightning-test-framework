@@ -67,12 +67,37 @@ var MockComponent = require('./MockComponent').MockComponent;
             }
         },
 
-        enqueueAction: function (action) {
-            const response = action();
-            if (action.callback) {
-                action.callback(response);
-            }
-        },
+	    enqueueAction: function (action) {
+		    const result = action.apply(this, action.params);
+		    if (action.callback) {
+			    action.callback(generateResponse(result));
+		    }
+
+		    function generateResponse(result) {
+			    const Response = function(state, result, error) {
+				    this.getState = function() {
+					    return state;
+				    };
+
+				    this.getReturnValue = function() {
+					    return result;
+				    };
+
+				    this.getError = function() {
+					    return [{
+						    message: error
+					    }];
+				    };
+			    };
+
+			    if (result) {
+				    return new Response('SUCCESS', result);
+			    }
+			    else {
+				    return new Response('ERROR', result, 'There was no response.');
+			    }
+		    }
+	    },
 
         createComponent: function (type, elements, callback) {
             var component = MockComponent([], [elements]);
