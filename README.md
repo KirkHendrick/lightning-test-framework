@@ -78,7 +78,6 @@ describe('TestComponent', function () {
 Related Resources
 --------
 [Lightning Components Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/components_overview.htm)
-[Mocha Documentation](https://mochajs.org/)
 
 [Mocha Documentation](https://mochajs.org/)
 
