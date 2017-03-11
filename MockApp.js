@@ -2,7 +2,7 @@
 
 	'use strict';
 
-	var MockApp = function (applicationEvents, component) {
+	const MockApp = function (applicationEvents, component) {
 		return new MockApp.init(applicationEvents, component);
 	};
 

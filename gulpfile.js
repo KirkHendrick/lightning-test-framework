@@ -47,7 +47,7 @@ function watchTests() {
 }
 
 function parseLightning(content, type) {
-	return "var Mock$A = require('" + settings.ltfDirectory + "/Mock$A').Mock$A," +
+	return "let Mock$A = require('" + settings.ltfDirectory + "/Mock$A').Mock$A," +
 		type + " = (function($A) { " +
 		"'use strict'; " +
 		"var publicApi = " +

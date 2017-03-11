@@ -1,10 +1,10 @@
-var MockComponent = require('./MockComponent').MockComponent;
+const MockComponent = require('./MockComponent').MockComponent;
 
 (function (exports) {
 
 	'use strict';
 
-	var Mock$A = function (app) {
+	const Mock$A = function (app) {
 		return new Mock$A.init(app);
 	};
 
@@ -55,11 +55,7 @@ var MockComponent = require('./MockComponent').MockComponent;
 			},
 
 			isObject: function (value) {
-				if (value && !Array.isArray(value) &&
-					typeof value === 'object') {
-					return true;
-				}
-				return false;
+				return Boolean(value && !Array.isArray(value) && typeof value === 'object');
 			}
 		},
 
@@ -74,6 +70,7 @@ var MockComponent = require('./MockComponent').MockComponent;
 			}
 
 			function generateResponse(result) {
+				// TODO: use Object.create() instead of a constructor function
 				const Response = function(state, result, error) {
 					this.getState = function() {
 						return state;
@@ -105,7 +102,7 @@ var MockComponent = require('./MockComponent').MockComponent;
 
 		createComponents: function (components, callback) {
 			const createdComponents = components.map(function (component) {
-				var c;
+				let c;
 				this.createComponent(component[0], component[1], function (cmp) {
 					c = cmp;
 				});

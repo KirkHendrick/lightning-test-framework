@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var MockComponent = function (attributes, elements, registeredEvents,
+    const MockComponent = function (attributes, elements, registeredEvents,
                                   eventHandlers, apexController, controller,
                                   helper, extendsFrom) {
         if (attributes === undefined) {
@@ -39,7 +39,7 @@
             }
 
             function getControllerAction(input) {
-                var action = self.getReference(input);
+                let action = self.getReference(input);
 
                 try {
                     action.setParams = function (params) {
